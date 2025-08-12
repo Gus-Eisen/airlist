@@ -4,3 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+pelican_ui = {path = "../pelican_ui" }
+pelican_ui_std = { path = "../pelican_ui_std" }
+maverick_os = { path = "../maverick_os"}
+
+[lib]
+name="main"
+crate-type=["staticlib", "cdylib", "rlib"]
