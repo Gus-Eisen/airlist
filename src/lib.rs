@@ -67,8 +67,8 @@ impl FirstScreen {
         let header = Header::home(
             // The majority of UI components will require the app context.
             ctx,
-            // The text on this header will say "My Screen"
-            "My Screen",
+            // The text on this header will say "AirList"
+            "AirList",
             // There will not be an icon button on this header
             None
         );
@@ -77,15 +77,15 @@ impl FirstScreen {
         let color = ctx.theme.colors.text.heading;
 
         // Create an icon element
-        // let icon = Icon::new(
-        //     // This element requires the app context
-        //     ctx,
-        //     "right",
-        //     // The color of the icon
-        //     color,
-        //     // The size of the icon. Icons are always square.
-        //     128.0
-        // );
+        let icon = Icon::new(
+            // This element requires the app context
+            ctx,
+            "add",
+            // The color of the icon
+            color,
+            // The size of the icon. Icons are always square.
+            50.0
+        );
 
         // Create the main heading text
         let text = Text::new(
@@ -120,11 +120,11 @@ impl FirstScreen {
             // Vertically center items
             Offset::Center,
             // All items must be boxed as Box<dyn Drawable>
-            vec![Box::new(text), Box::new(subtext)]
+            vec![Box::new(icon), Box::new(text), Box::new(subtext)]
         );
 
         // Return the FirstScreen with a default Stack and a
-        // new Page containinhg our header, content, and no bumper.
+        // new Page containing our header, content, and no bumper.
         FirstScreen(Stack::default(), Page::new(Some(header), content, None))
     }
 }
