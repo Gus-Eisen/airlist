@@ -77,16 +77,15 @@ impl FirstScreen {
         let color = ctx.theme.colors.text.heading;
 
         // Create an icon element
-        let icon = Icon::new(
-            // This element requires the app context
-            ctx,
-            // We choose the "pelican_ui" icon
-            "pelican_ui",
-            // The color of the icon
-            color,
-            // The size of the icon. Icons are always square.
-            128.0
-        );
+        // let icon = Icon::new(
+        //     // This element requires the app context
+        //     ctx,
+        //     "right",
+        //     // The color of the icon
+        //     color,
+        //     // The size of the icon. Icons are always square.
+        //     128.0
+        // );
 
         // Create the main heading text
         let text = Text::new(
@@ -121,7 +120,7 @@ impl FirstScreen {
             // Vertically center items
             Offset::Center,
             // All items must be boxed as Box<dyn Drawable>
-            vec![Box::new(icon), Box::new(text), Box::new(subtext)]
+            vec![Box::new(text), Box::new(subtext)]
         );
 
         // Return the FirstScreen with a default Stack and a
