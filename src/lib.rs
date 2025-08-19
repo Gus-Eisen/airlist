@@ -1,19 +1,13 @@
 mod airlist;
 
 use pelican_ui::{Component, Context, Plugins, Plugin, maverick_start, start, Application, PelicanEngine, MaverickOS};
-use pelican_ui::drawable::{Drawable, Component, Align};
+use pelican_ui::drawable::{Drawable, Component, Align, Color};
 use pelican_ui::runtime::{Services, ServiceList};
 use pelican_ui::layout::{Layout, SizeRequest, Area};
 use pelican_ui::events::OnEvent;
 use std::collections::BTreeMap;
 
-use pelican_ui_std::{
-    Interface, Stack,
-    Page, Text, TextStyle,
-    Offset, Content, Icon,
-    ExpandableText, Header,
-    AppPage,
-};
+use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState};
 
 // Define the main application struct. This is our entry point type.
 pub struct MyApp;
@@ -63,29 +57,41 @@ impl AppPage for FirstScreen {
 
 impl FirstScreen {
     pub fn new(ctx: &mut Context) -> Self {
+        let new_list_icon = IconButton::new(
+            ctx,
+            "add",
+            ButtonSize::Medium,
+            ButtonStyle::Secondary,
+            ButtonState::Default,
+            Box::new(|_ctx: &mut Context| {
+                ()
+            }),
+            None,
+        );
         // Create a header for the page
         let header = Header::home(
             // The majority of UI components will require the app context.
             ctx,
             // The text on this header will say "AirList"
             "AirList",
-            // There will not be an icon button on this header
-            None
+            // TODO: delete this if keeping Some: There will not be an icon button on this header
+            Some(new_list_icon)
         );
 
         let font_size = ctx.theme.fonts.size;
-        let color = ctx.theme.colors.text.heading;
+        // let color = ctx.theme.colors.text.heading;
 
-        // Create an icon element
-        let icon = Icon::new(
-            // This element requires the app context
-            ctx,
-            "add",
-            // The color of the icon
-            color,
-            // The size of the icon. Icons are always square.
-            50.0
-        );
+
+        // // Create an icon element
+        // let icon = Icon::new(
+        //     // This element requires the app context
+        //     ctx,
+        //     "add",
+        //     // The color of the icon
+        //     color,
+        //     // The size of the icon. Icons are always square.
+        //     50.0
+        // );
 
         // Create the main heading text
         let text = Text::new(
@@ -120,7 +126,7 @@ impl FirstScreen {
             // Vertically center items
             Offset::Center,
             // All items must be boxed as Box<dyn Drawable>
-            vec![Box::new(icon), Box::new(text), Box::new(subtext)]
+            vec![Box::new(text), Box::new(subtext)]
         );
 
         // Return the FirstScreen with a default Stack and a
