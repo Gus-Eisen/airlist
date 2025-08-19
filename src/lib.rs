@@ -96,12 +96,11 @@ impl FirstScreen {
         // Create the main heading text
         let text = Text::new(
             ctx,
-            // This text will say "Hello World!"
-            "Hello World!",
+            "Welcome to AirList",
             // The style of this text will be heading
             TextStyle::Heading,
             // The size will be h2
-            font_size.h2,
+            font_size.h3,
             // The text alignment
             Align::Center
         );
@@ -109,7 +108,7 @@ impl FirstScreen {
         // Create subtext.
         let subtext = ExpandableText::new(
             ctx,
-            "First project loaded successfully.",
+            "Click on the icon in the top right corner to create a new list.",
             // This text will have primary text style.
             TextStyle::Primary,
             // Medium font size
