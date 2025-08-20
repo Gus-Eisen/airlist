@@ -28,7 +28,7 @@ impl Application for MyApp {
     // Asynchronously create the main drawable UI component
     async fn new(ctx: &mut Context) -> Box<dyn Drawable> {
         // Create the first screen
-        let home = FirstScreen::new(ctx);
+        let home = LandingScreen::new(ctx);
         // Create the main interface with the first screen as the starting page
         let interface = Interface::new(ctx, Box::new(home), None, None);
         // Return the interface wrapped in a Box
@@ -39,13 +39,13 @@ impl Application for MyApp {
 start!(MyApp);
 
 #[derive(Debug, Component)]
-pub struct FirstScreen(Stack, Page);
+pub struct LandingScreen(Stack, Page);
 
 // Implement event handling for FirstScreen (empty for now)
-impl OnEvent for FirstScreen {}
+impl OnEvent for LandingScreen {}
 
 // Implement the AppPage trait for navigation and UI behavior
-impl AppPage for FirstScreen {
+impl AppPage for LandingScreen {
     // This screen does not have a navigation bar
     fn has_nav(&self) -> bool { false }
 
@@ -55,7 +55,7 @@ impl AppPage for FirstScreen {
     }
 }
 
-impl FirstScreen {
+impl LandingScreen {
     pub fn new(ctx: &mut Context) -> Self {
         let new_list_icon = IconButton::new(
             ctx,
@@ -108,7 +108,7 @@ impl FirstScreen {
         // Create subtext.
         let subtext = ExpandableText::new(
             ctx,
-            "Click on the icon in the top right corner to create a new list.",
+            "Click the icon in the top right corner to create a new list.",
             // This text will have primary text style.
             TextStyle::Primary,
             // Medium font size
@@ -130,6 +130,6 @@ impl FirstScreen {
 
         // Return the FirstScreen with a default Stack and a
         // new Page containing our header, content, and no bumper.
-        FirstScreen(Stack::default(), Page::new(Some(header), content, None))
+        LandingScreen(Stack::default(), Page::new(Some(header), content, None))
     }
 }
