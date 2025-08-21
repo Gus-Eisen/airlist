@@ -7,7 +7,7 @@ use pelican_ui::layout::{Layout, SizeRequest, Area};
 use pelican_ui::events::OnEvent;
 use std::collections::BTreeMap;
 
-use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState};
+use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent};
 
 // Define the main application struct. This is our entry point type.
 pub struct MyApp;
@@ -49,7 +49,6 @@ impl AppPage for LandingScreen {
     // This screen does not have a navigation bar
     fn has_nav(&self) -> bool { false }
 
-    // Handle page navigation. Always returns Err(self) because this page cannot navigate.
     fn navigate(self: Box<Self>, _ctx: &mut Context, _index: usize) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
         Err(self)
     }
@@ -63,8 +62,8 @@ impl LandingScreen {
             ButtonSize::Medium,
             ButtonStyle::Secondary,
             ButtonState::Default,
-            Box::new(|_ctx: &mut Context| {
-                ()
+            Box::new(|ctx: &mut Context| {
+                ctx.trigger_event(NavigateEvent(0));
             }),
             None,
         );
