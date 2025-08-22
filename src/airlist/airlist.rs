@@ -5,7 +5,7 @@ use pelican_ui::layout::{Layout, SizeRequest, Area};
 use pelican_ui::events::OnEvent;
 use std::collections::BTreeMap;
 
-use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState};
+use pelican_ui_std::{Interface, Stack, Page, Text, TextInput, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState};
 use crate::LandingScreen;
 
 #[derive(Debug, Component)]
@@ -45,8 +45,14 @@ impl NewListScreen {
             "AirList",
             Some(return_to_landingscreen_icon)
         );
-        //TODO: why is text not aligning left?
-        let text = ExpandableText::new(ctx, "Type a name for your list or leave blank for today's date.", TextStyle::White, 25.0, Align::Left, Some(2));
+        let text_field = TextInput::new(
+            ctx,
+            None,
+            None,
+            "Enter list here.",
+            None,
+            TextInput::NO_ICON,
+            true);
         
         // Combine heading into page content
         let content = Content::new(
@@ -54,7 +60,7 @@ impl NewListScreen {
             // Vertically center items
             Offset::Start,
             // All items must be boxed as Box<dyn Drawable>
-            vec![Box::new(text)]
+            vec![Box::new(text_field)]
         );
 
         // new Page containing our header, content, and no bumper.
