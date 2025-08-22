@@ -45,14 +45,14 @@ impl NewListScreen {
             "AirList",
             Some(return_to_landingscreen_icon)
         );
-
-        let text = Text::new(ctx, "Type a name for your list...", TextStyle::Keyboard, 100.0, Align::Left);
+        //TODO: why is text not aligning left?
+        let text = ExpandableText::new(ctx, "Type a name for your list or leave blank for today's date.", TextStyle::White, 25.0, Align::Left, Some(2));
         
         // Combine heading into page content
         let content = Content::new(
             ctx,
             // Vertically center items
-            Offset::Center,
+            Offset::Start,
             // All items must be boxed as Box<dyn Drawable>
             vec![Box::new(text)]
         );

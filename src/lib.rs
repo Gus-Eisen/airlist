@@ -49,8 +49,11 @@ impl AppPage for LandingScreen {
     // This screen does not have a navigation bar
     fn has_nav(&self) -> bool { false }
 
-    fn navigate(self: Box<Self>, _ctx: &mut Context, _index: usize) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
-        Err(self)
+    fn navigate(self: Box<Self>, ctx: &mut Context, index: usize) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
+        match index {
+            0 => Ok(Box::new(airlist::NewListScreen::new(ctx))),
+            _ => Err(self),
+        }
     }
 }
 
