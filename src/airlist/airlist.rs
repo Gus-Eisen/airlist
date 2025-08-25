@@ -5,8 +5,8 @@ use pelican_ui::layout::{Layout, SizeRequest, Area};
 use pelican_ui::events::OnEvent;
 use std::collections::BTreeMap;
 
-use pelican_ui_std::{Interface, Stack, Page, Text, TextInput, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState};
-use crate::LandingScreen;
+use pelican_ui_std::{Interface, Stack, Page, Text, TextInput, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent};
+use crate::{airlist, LandingScreen};
 
 #[derive(Debug, Component)]
 pub struct NewListScreen(Stack, Page);
@@ -18,9 +18,11 @@ impl AppPage for NewListScreen {
     // This screen does not have a navigation bar
     fn has_nav(&self) -> bool { false }
 
-    // Handle page navigation. Always returns Err(self) because this page cannot navigate.
-    fn navigate(self: Box<Self>, _ctx: &mut Context, _index: usize) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
-        Err(self)
+    fn navigate(self: Box<Self>, ctx: &mut Context, index: usize) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
+        match index {
+            0 => Ok(Box::new(LandingScreen::new(ctx))),
+            _ => Err(self),
+        }
     }
 }
 
@@ -32,8 +34,8 @@ impl NewListScreen {
             ButtonSize::Medium,
             ButtonStyle::Secondary,
             ButtonState::Default,
-            Box::new(|_ctx: &mut Context| {
-                ()
+            Box::new(|ctx: &mut Context| {
+                ctx.trigger_event(NavigateEvent(0));
             }),
             None,
         );
