@@ -14,11 +14,11 @@ pub struct NewListScreen(Stack, Page);
 
 impl OnEvent for NewListScreen {
     fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn pelican_ui::events::Event) -> bool {
-        // log keyboard entries.
-        // if event.downcast_ref::<InputEditedEvent>().is_some() {
-        //     let current = self.1.value().clone();
-        //     println!("User entered: {}", current);
-        // }
+        //log keyboard entries.
+        if event.downcast_ref::<InputEditedEvent>().is_some() {
+            let current: &mut TextInput = self.1.content().find::<TextInput>().expect("Could not find text.");
+            println!("User entered: {:?}", current);
+        }
         true
     }
 }
