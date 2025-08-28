@@ -4,10 +4,20 @@ use pelican_ui::{Component, Context, Plugins, Plugin, maverick_start, start, App
 use pelican_ui::drawable::{Drawable, Component, Align, Color};
 use pelican_ui::runtime::{Services, ServiceList};
 use pelican_ui::layout::{Layout, SizeRequest, Area};
-use pelican_ui::events::OnEvent;
+use pelican_ui::events::{Event, OnEvent};
 use std::collections::BTreeMap;
 
 use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent};
+
+#[derive(Debug)]
+pub struct LoggedInput(pub String);
+
+impl Event for LoggedInput {
+    fn pass(self: Box<Self>, _ctx: &mut Context, children: Vec<((f32, f32), (f32, f32))>) -> Vec<Option<Box<dyn Event>>> {
+        todo!()
+    }
+}
+
 
 // Define the main application struct. This is our entry point type.
 pub struct MyApp;
@@ -41,8 +51,24 @@ start!(MyApp);
 #[derive(Debug, Component)]
 pub struct LandingScreen(Stack, Page);
 
-// Implement event handling for FirstScreen (empty for now)
-impl OnEvent for LandingScreen {}
+impl OnEvent for LandingScreen {
+    fn on_event(&mut self, ctx: &mut Context, event: &mut dyn Event) -> bool {
+        // if let Some(LoggedInput(text)) = event.downcast_ref::<LoggedInput>() {
+        //     let font_size = ctx.theme.fonts.size;
+        //     let t = Text::new(
+        //         ctx,
+        //         text.as_str(),
+        //         TextStyle::Primary,
+        //         font_size.md,
+        //         Align::Left,
+        //     );
+        //     self.1.content().push(Box::new(t));
+        //     return true;
+        // }
+        true
+    }
+}
+
 
 // Implement the AppPage trait for navigation and UI behavior
 impl AppPage for LandingScreen {
@@ -59,17 +85,15 @@ impl AppPage for LandingScreen {
 
 impl LandingScreen {
     pub fn new(ctx: &mut Context) -> Self {
-        let new_list_icon = IconButton::new(
+        let new_list_icon = IconButton::navigation(
             ctx,
             "add",
-            ButtonSize::Medium,
-            ButtonStyle::Secondary,
-            ButtonState::Default,
-            Box::new(|ctx: &mut Context| {
+            |ctx: &mut Context| {
+                println!("new_list_icon clicked.");
                 ctx.trigger_event(NavigateEvent(0));
-            }),
-            None,
+            },
         );
+
         // Create a header for the page
         let header = Header::home(
             // The majority of UI components will require the app context.
@@ -81,19 +105,6 @@ impl LandingScreen {
         );
 
         let font_size = ctx.theme.fonts.size;
-        // let color = ctx.theme.colors.text.heading;
-
-
-        // // Create an icon element
-        // let icon = Icon::new(
-        //     // This element requires the app context
-        //     ctx,
-        //     "add",
-        //     // The color of the icon
-        //     color,
-        //     // The size of the icon. Icons are always square.
-        //     50.0
-        // );
 
         // Create the main heading text
         let text = Text::new(
@@ -130,8 +141,6 @@ impl LandingScreen {
             vec![Box::new(text), Box::new(subtext)]
         );
 
-        // Return the FirstScreen with a default Stack and a
-        // new Page containing our header, content, and no bumper.
         LandingScreen(Stack::default(), Page::new(Some(header), content, None))
     }
 }
