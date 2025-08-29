@@ -7,7 +7,7 @@ use pelican_ui::layout::{Layout, SizeRequest, Area};
 use pelican_ui::events::{Event, OnEvent};
 use std::collections::BTreeMap;
 
-use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent};
+use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent, TextInput, InputEditedEvent};
 
 #[derive(Debug)]
 pub struct LoggedInput(pub String);
@@ -49,7 +49,7 @@ impl Application for MyApp {
 start!(MyApp);
 
 #[derive(Debug, Component)]
-pub struct LandingScreen(Stack, Page);
+pub struct LandingScreen(Stack, Page, TextInput);
 
 impl OnEvent for LandingScreen {
     fn on_event(&mut self, ctx: &mut Context, event: &mut dyn Event) -> bool {
@@ -65,6 +65,10 @@ impl OnEvent for LandingScreen {
         //     self.1.content().push(Box::new(t));
         //     return true;
         // }
+        if event.downcast_ref::<InputEditedEvent>().is_some() {
+            let current = self.2.value().clone();
+            println!("User entered: {}", current);
+        }
         true
     }
 }
@@ -140,7 +144,17 @@ impl LandingScreen {
             // All items must be boxed as Box<dyn Drawable>
             vec![Box::new(text), Box::new(subtext)]
         );
+        let input = TextInput::new(
+            ctx,
+            None,
+            None,
+            "",
+            None,
+            TextInput::NO_ICON,
+            true,
+        );
 
-        LandingScreen(Stack::default(), Page::new(Some(header), content, None))
+
+        LandingScreen(Stack::default(), Page::new(Some(header), content, None), input)
     }
 }
