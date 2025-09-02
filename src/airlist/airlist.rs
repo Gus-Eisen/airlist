@@ -20,7 +20,7 @@ impl InputLogger {
 impl OnEvent for InputLogger {
     fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn pelican_ui::events::Event) -> bool {
         if event.downcast_ref::<InputEditedEvent>().is_some() {
-            println!("User entered: {}", self.1.value());
+            println!("In NewListScreen's text field, User entered: {}", self.1.value());
         }
         true
     }
@@ -32,9 +32,10 @@ pub struct NewListScreen(Stack, Page);
 
 impl OnEvent for NewListScreen {
     fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn pelican_ui::events::Event) -> bool {
-        if event.downcast_ref::<InputEditedEvent>().is_some() {
-            println!("text_field edited");
-        }
+        // if event.downcast_ref::<InputEditedEvent>().is_some() {
+                //print statement fires when user enters in text to text_field.
+        //     println!("text_field edited");
+        // }
         true
     }
 }
