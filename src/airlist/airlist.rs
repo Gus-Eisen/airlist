@@ -8,17 +8,21 @@ use maverick_os::window::EventHandler;
 use pelican_ui_std::{Interface, InputEditedEvent, Stack, Page, Text, TextInput, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent};
 use crate::{airlist, LandingScreen};
 
+#[derive(Debug)]
+pub struct DataLogger(pub String);
+
 #[derive(Debug, Component)]
 pub struct NewListScreen(Stack, Page);
 
 
 impl OnEvent for NewListScreen {
     fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn pelican_ui::events::Event) -> bool {
-        //log keyboard entries.
-        // if event.downcast_ref::<InputEditedEvent>().is_some() {
-        //     let current = self.2.value().clone();
-        //     println!("User entered: {}", current);
+        // if let Some(InputEditedEvent(text)) = event.downcast_ref::<InputEditedEvent>() {
+        //     // Clone the user-entered text into DataLogger
+        //     let data = DataLogger(text.clone());
+        //     println!("User entered: {}", data.0);
         // }
+
         true
     }
 }
@@ -57,7 +61,7 @@ impl NewListScreen {
             "AirList",
             Some(return_to_landingscreen_icon)
         );
-        let text_field = TextInput::new(
+        let mut text_field = TextInput::new(
             ctx,
             None,
             None,
@@ -65,14 +69,28 @@ impl NewListScreen {
             None,
             TextInput::NO_ICON,
             true);
-        
+
+        let font_size = ctx.theme.fonts.size;
+
+        let text = Text::new(
+            ctx,
+            // This text will say "Hello World!"
+            text_field.value(),
+            // The style of this text will be heading
+            TextStyle::Heading,
+            // The size will be h2
+            font_size.h2,
+            // The text alignment
+            Align::Center
+        );
+
+
         let content = Content::new(
             ctx,
             Offset::Start,
             // All items must be boxed as Box<dyn Drawable>
             vec![Box::new(text_field)]
         );
-
         NewListScreen(Stack::default(), Page::new(Some(header), content, None))
     }
 }
