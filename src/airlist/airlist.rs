@@ -62,6 +62,7 @@ impl NewListScreen {
             ButtonStyle::Secondary,
             ButtonState::Default,
             Box::new(|ctx: &mut Context| {
+                println!("return_to_landingscreen_icon clicked.");
                 ctx.trigger_event(NavigateEvent(0));
             }),
             None,

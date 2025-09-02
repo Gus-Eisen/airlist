@@ -80,7 +80,7 @@ impl AppPage for LandingScreen {
 
     fn navigate(self: Box<Self>, ctx: &mut Context, index: usize) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
         match index {
-            0 => Ok(Box::new(airlist::NewListScreen::new(ctx))),
+            0 => Ok(Box::new(NewListScreen::new(ctx))),
             _ => Err(self),
         }
     }
