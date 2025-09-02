@@ -136,26 +136,14 @@ impl LandingScreen {
             None
         );
 
-        let input = TextInput::new(
-            ctx,
-            None,
-            None,
-            "",
-            None,
-            TextInput::NO_ICON,
-            true,
-        );
-
         // Combine icon, heading, and subtext into page content
         let content = Content::new(
             ctx,
             // Vertically center items
             Offset::Center,
             // All items must be boxed as Box<dyn Drawable>
-            vec![Box::new(text), Box::new(subtext), Box::new(input)]
+            vec![Box::new(text), Box::new(subtext)]
         );
-
-
 
         LandingScreen(Stack::default(), Page::new(Some(header), content, None))
     }

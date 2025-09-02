@@ -14,10 +14,9 @@ pub struct DataLogger(pub String);
 #[derive(Debug, Component)]
 pub struct NewListScreen(Stack, Page);
 
-
 impl OnEvent for NewListScreen {
     fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn pelican_ui::events::Event) -> bool {
-        // if let Some(InputEditedEvent(text)) = event.downcast_ref::<InputEditedEvent>() {
+        // if event.downcast_ref::<InputEditedEvent>().is_some() {
         //     // Clone the user-entered text into DataLogger
         //     let data = DataLogger(text.clone());
         //     println!("User entered: {}", data.0);
@@ -85,6 +84,7 @@ impl NewListScreen {
             // All items must be boxed as Box<dyn Drawable>
             vec![Box::new(text_field)]
         );
+        println!("User entered: {:?} in NewListScreen's text_field.", text);
         NewListScreen(Stack::default(), Page::new(Some(header), content, None))
     }
 }
