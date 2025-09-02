@@ -70,7 +70,8 @@ impl NewListScreen {
 
         let font_size = ctx.theme.fonts.size;
 
-        let text = Text::new(
+        //I think this captures user's input from text_field.
+        let captured_text = Text::new(
             ctx,
             text_field.value(),
             TextStyle::Heading,
@@ -82,9 +83,8 @@ impl NewListScreen {
             ctx,
             Offset::Start,
             // All items must be boxed as Box<dyn Drawable>
-            vec![Box::new(text_field)]
+            vec![Box::new(text_field), Box::new(captured_text)]
         );
-        println!("User entered: {:?} in NewListScreen's text_field.", text);
         NewListScreen(Stack::default(), Page::new(Some(header), content, None))
     }
 }

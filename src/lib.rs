@@ -19,7 +19,6 @@ impl Event for LoggedInput {
     }
 }
 
-
 // Define the main application struct. This is our entry point type.
 pub struct MyApp;
 
