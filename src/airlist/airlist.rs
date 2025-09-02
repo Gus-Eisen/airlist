@@ -8,8 +8,24 @@ use maverick_os::window::EventHandler;
 use pelican_ui_std::{Interface, InputEditedEvent, Stack, Page, Text, TextInput, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent};
 use crate::{airlist, LandingScreen};
 
-#[derive(Debug)]
-pub struct DataLogger(pub String);
+#[derive(Debug, Component)]
+pub struct InputLogger(Stack, TextInput);
+
+impl InputLogger {
+    fn new(ctx: &mut Context, input: TextInput) -> Self {
+        InputLogger(Stack::default(), input)
+    }
+}
+
+impl OnEvent for InputLogger {
+    fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn pelican_ui::events::Event) -> bool {
+        if event.downcast_ref::<InputEditedEvent>().is_some() {
+            println!("User entered: {}", self.1.value());
+        }
+        true
+    }
+}
+
 
 #[derive(Debug, Component)]
 pub struct NewListScreen(Stack, Page);
@@ -66,22 +82,24 @@ impl NewListScreen {
             TextInput::NO_ICON,
             true);
 
+        let logger = InputLogger::new(ctx, text_field);
+
         let font_size = ctx.theme.fonts.size;
 
         //I think this captures user's input from text_field.
-        let captured_text = Text::new(
-            ctx,
-            text_field.value(),
-            TextStyle::Heading,
-            font_size.h2,
-            Align::Center
-        );
+        // let captured_text = Text::new(
+        //     ctx,
+        //     text_field.value(),
+        //     TextStyle::Heading,
+        //     font_size.h2,
+        //     Align::Center
+        // );
 
         let content = Content::new(
             ctx,
             Offset::Start,
             // All items must be boxed as Box<dyn Drawable>
-            vec![Box::new(text_field), Box::new(captured_text)]
+            vec![Box::new(logger)]
         );
         NewListScreen(Stack::default(), Page::new(Some(header), content, None))
     }
