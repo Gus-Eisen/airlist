@@ -22,7 +22,6 @@ impl OnEvent for NewListScreen {
         //     let data = DataLogger(text.clone());
         //     println!("User entered: {}", data.0);
         // }
-
         true
     }
 }
@@ -74,16 +73,11 @@ impl NewListScreen {
 
         let text = Text::new(
             ctx,
-            // This text will say "Hello World!"
             text_field.value(),
-            // The style of this text will be heading
             TextStyle::Heading,
-            // The size will be h2
             font_size.h2,
-            // The text alignment
             Align::Center
         );
-
 
         let content = Content::new(
             ctx,
