@@ -16,11 +16,9 @@ pub struct NewListScreen(Stack, Page);
 
 impl OnEvent for NewListScreen {
     fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn pelican_ui::events::Event) -> bool {
-        // if event.downcast_ref::<InputEditedEvent>().is_some() {
-        //     // Clone the user-entered text into DataLogger
-        //     let data = DataLogger(text.clone());
-        //     println!("User entered: {}", data.0);
-        // }
+        if event.downcast_ref::<InputEditedEvent>().is_some() {
+            println!("text_field edited");
+        }
         true
     }
 }
