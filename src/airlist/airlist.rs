@@ -34,7 +34,7 @@ impl OnEvent for InputLogger {
 
 
 #[derive(Debug, Component)]
-pub struct NewListScreen(Stack, Page);
+pub struct NewListScreen(Stack, Page, #[skip]String);
 
 impl OnEvent for NewListScreen {
     fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn pelican_ui::events::Event) -> bool {
@@ -90,18 +90,9 @@ impl NewListScreen {
             TextInput::NO_ICON,
             true);
 
+        let captured_text = &mut text_field.value().clone();
+
         let logger = InputLogger::new(ctx, text_field);
-
-        let font_size = ctx.theme.fonts.size;
-
-        //I think this captures user's input from text_field.
-        // let captured_text = Text::new(
-        //     ctx,
-        //     text_field.value(),
-        //     TextStyle::Heading,
-        //     font_size.h2,
-        //     Align::Center
-        // );
 
         let content = Content::new(
             ctx,
@@ -109,6 +100,6 @@ impl NewListScreen {
             // All items must be boxed as Box<dyn Drawable>
             vec![Box::new(logger)]
         );
-        NewListScreen(Stack::default(), Page::new(Some(header), content, None))
+        NewListScreen(Stack::default(), Page::new(Some(header), content, None), captured_text.to_string())
     }
 }
