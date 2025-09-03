@@ -7,7 +7,7 @@ use pelican_ui::layout::{Layout, SizeRequest, Area};
 use pelican_ui::events::{Event, OnEvent};
 use std::collections::BTreeMap;
 
-use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent, TextInput, InputEditedEvent};
+use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent, TextInput, InputEditedEvent, ListItem};
 use crate::airlist::NewListScreen;
 
 #[derive(Debug)]
@@ -15,7 +15,7 @@ pub struct LoggedInput(pub String);
 
 impl Event for LoggedInput {
     fn pass(self: Box<Self>, _ctx: &mut Context, children: Vec<((f32, f32), (f32, f32))>) -> Vec<Option<Box<dyn Event>>> {
-        todo!()
+        vec![Some(self)]
     }
 }
 
@@ -53,24 +53,26 @@ pub struct LandingScreen(Stack, Page);
 
 impl OnEvent for LandingScreen {
     fn on_event(&mut self, ctx: &mut Context, event: &mut dyn Event) -> bool {
-        // if let Some(LoggedInput(text)) = event.downcast_ref::<LoggedInput>() {
-        //     let font_size = ctx.theme.fonts.size;
-        //     let t = Text::new(
-        //         ctx,
-        //         text.as_str(),
-        //         TextStyle::Primary,
-        //         font_size.md,
-        //         Align::Left,
-        //     );
-        //     self.1.content().push(Box::new(t));
-        //     return true;
-        // }
+        if let Some(LoggedInput(text)) = event.downcast_ref::<LoggedInput>() {
+            let font_size = ctx.theme.fonts.size;
+            let t = Text::new(
+                ctx,
+                text.as_str(),
+                TextStyle::Primary,
+                font_size.md,
+                Align::Left,
+            );
+            self.1.content().items().push(Box::new(t));
+
+            return true;
+        }
+        true
         // if event.downcast_ref::<InputEditedEvent>().is_some() {
         //     let current = NewListScreen.1;
-        // }
-        true
+        }
+
     }
-}
+
 
 
 // Implement the AppPage trait for navigation and UI behavior
@@ -135,13 +137,29 @@ impl LandingScreen {
             None
         );
 
+        let logged_notes = ListItem::new(
+            ctx,
+            true,
+            "test",
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            false,
+            |ctx: &mut Context| println!("Orange")
+        );
+
         // Combine icon, heading, and subtext into page content
         let content = Content::new(
             ctx,
             // Vertically center items
             Offset::Center,
             // All items must be boxed as Box<dyn Drawable>
-            vec![Box::new(text), Box::new(subtext)]
+            vec![Box::new(text), Box::new(subtext), Box::new(logged_notes)]
         );
 
         LandingScreen(Stack::default(), Page::new(Some(header), content, None))

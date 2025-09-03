@@ -6,7 +6,7 @@ use pelican_ui::events::OnEvent;
 use std::collections::BTreeMap;
 use maverick_os::window::EventHandler;
 use pelican_ui_std::{Interface, InputEditedEvent, Stack, Page, Text, TextInput, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent};
-use crate::{airlist, LandingScreen};
+use crate::{airlist, LandingScreen, LoggedInput};
 
 #[derive(Debug, Component)]
 pub struct InputLogger(Stack, TextInput);
@@ -18,12 +18,18 @@ impl InputLogger {
 }
 
 impl OnEvent for InputLogger {
-    fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn pelican_ui::events::Event) -> bool {
+    fn on_event(&mut self, ctx: &mut Context, event: &mut dyn pelican_ui::events::Event) -> bool {
         if event.downcast_ref::<InputEditedEvent>().is_some() {
             println!("In NewListScreen's text field, User entered: {}", self.1.value());
         }
+
+        if let Some(edited) = event.downcast_ref::<InputEditedEvent>() {
+            ctx.trigger_event(LoggedInput(self.1.value().clone()));
+        }
+
         true
     }
+
 }
 
 
