@@ -2,7 +2,7 @@ use pelican_ui::{Component, Context, Plugins, Plugin, maverick_start, start, App
 use pelican_ui::drawable::{Drawable, Component, Align, Color};
 use pelican_ui::runtime::{Services, ServiceList};
 use pelican_ui::layout::{Layout, SizeRequest, Area};
-use pelican_ui::events::OnEvent;
+use pelican_ui::events::{Event, OnEvent};
 use std::collections::BTreeMap;
 use maverick_os::window::EventHandler;
 use pelican_ui_std::{Interface, InputEditedEvent, Stack, Page, Text, TextInput, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent};
@@ -21,11 +21,12 @@ impl OnEvent for InputLogger {
     fn on_event(&mut self, ctx: &mut Context, event: &mut dyn pelican_ui::events::Event) -> bool {
         if event.downcast_ref::<InputEditedEvent>().is_some() {
             println!("In NewListScreen's text field, User entered: {}", self.1.value());
-        }
-
-        if let Some(edited) = event.downcast_ref::<InputEditedEvent>() {
             ctx.trigger_event(LoggedInput(self.1.value().clone()));
         }
+        //TODO: redundant. delete when newlistscreen is debugged.
+        // if let Some(edited) = event.downcast_ref::<InputEditedEvent>() {
+        //     ctx.trigger_event(LoggedInput(self.1.value().clone()));
+        // }
 
         true
     }
@@ -38,10 +39,10 @@ pub struct NewListScreen(Stack, Page, #[skip]String);
 
 impl OnEvent for NewListScreen {
     fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn pelican_ui::events::Event) -> bool {
-        // if event.downcast_ref::<InputEditedEvent>().is_some() {
-                //print statement fires when user enters in text to text_field.
-        //     println!("text_field edited");
-        // }
+        if let Some(LoggedInput(text)) = event.downcast_ref::<LoggedInput>() {
+            self.2 = (*text.clone()).parse().unwrap();
+            println!("Another NewListString: {}", text)
+        }
         true
     }
 }
@@ -90,7 +91,9 @@ impl NewListScreen {
             TextInput::NO_ICON,
             true);
 
-        let captured_text = &mut text_field.value().clone();
+        // let captured_text = text_field.value().clone();
+
+        let string_from_text_field = text_field.value().clone();
 
         let logger = InputLogger::new(ctx, text_field);
 
@@ -100,6 +103,6 @@ impl NewListScreen {
             // All items must be boxed as Box<dyn Drawable>
             vec![Box::new(logger)]
         );
-        NewListScreen(Stack::default(), Page::new(Some(header), content, None), captured_text.to_string())
+        NewListScreen(Stack::default(), Page::new(Some(header), content, None), string_from_text_field.to_string())
     }
 }
