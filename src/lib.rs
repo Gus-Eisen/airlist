@@ -13,6 +13,17 @@ use crate::airlist::NewListScreen;
 #[derive(Debug)]
 pub struct LoggedInput(pub String);
 
+impl OnEvent for LoggedInput {
+    fn on_event(&mut self, ctx: &mut Context, event: &mut dyn Event) -> bool {
+        if event.downcast_ref::<InputEditedEvent>().is_some() {
+            //todo: this printf doesn't fire.
+            println!("Wonder");
+            // ctx.trigger_event(LoggedInput(self.1.value().clone()));
+        }
+        true
+    }
+}
+
 impl Event for LoggedInput {
     fn pass(self: Box<Self>, _ctx: &mut Context, children: Vec<((f32, f32), (f32, f32))>) -> Vec<Option<Box<dyn Event>>> {
         vec![Some(self)]
@@ -63,8 +74,10 @@ impl OnEvent for LandingScreen {
                 Align::Left,
             );
             self.1.content().items().push(Box::new(t));
+            //TODO: This printf doesn't fire.
+            println!("orange");
 
-            return true;
+            // return true;
         }
         true
         // if event.downcast_ref::<InputEditedEvent>().is_some() {

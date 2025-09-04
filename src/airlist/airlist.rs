@@ -18,7 +18,7 @@ impl InputLogger {
 }
 
 impl OnEvent for InputLogger {
-    fn on_event(&mut self, ctx: &mut Context, event: &mut dyn pelican_ui::events::Event) -> bool {
+    fn on_event(&mut self, ctx: &mut Context, event: &mut dyn Event) -> bool {
         if event.downcast_ref::<InputEditedEvent>().is_some() {
             println!("In NewListScreen's text field, User entered: {}", self.1.value());
             ctx.trigger_event(LoggedInput(self.1.value().clone()));
@@ -33,15 +33,17 @@ impl OnEvent for InputLogger {
 
 }
 
-
 #[derive(Debug, Component)]
 pub struct NewListScreen(Stack, Page, #[skip]String);
 
 impl OnEvent for NewListScreen {
-    fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn pelican_ui::events::Event) -> bool {
-        if let Some(LoggedInput(text)) = event.downcast_ref::<LoggedInput>() {
-            self.2 = (*text.clone()).parse().unwrap();
-            println!("Another NewListString: {}", text)
+    fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn Event) -> bool {
+        if event.downcast_ref::<InputEditedEvent>().is_some() {
+            if let Some(input) = self.1.content().find::<TextInput>() {
+                self.2 = input.value().clone();
+                println!("NewListScreen captured text: {}", self.2);
+            }
+
         }
         true
     }
@@ -93,16 +95,17 @@ impl NewListScreen {
 
         // let captured_text = text_field.value().clone();
 
-        let string_from_text_field = text_field.value().clone();
-
-        let logger = InputLogger::new(ctx, text_field);
+        //let string_from_text_field = text_field.value().clone();
+        //todo: uncomment this and put back in content to have InputLogger's
+        //todo: OnEvent printf work.
+        // let logger = InputLogger::new(ctx, text_field);
 
         let content = Content::new(
             ctx,
             Offset::Start,
             // All items must be boxed as Box<dyn Drawable>
-            vec![Box::new(logger)]
+            vec![Box::new(text_field)]
         );
-        NewListScreen(Stack::default(), Page::new(Some(header), content, None), string_from_text_field.to_string())
+        NewListScreen(Stack::default(), Page::new(Some(header), content, None), String::new())
     }
 }
