@@ -6,32 +6,7 @@ use pelican_ui::events::{Event, OnEvent};
 use std::collections::BTreeMap;
 use maverick_os::window::EventHandler;
 use pelican_ui_std::{Interface, InputEditedEvent, Stack, Page, Text, TextInput, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent};
-use crate::{airlist, LandingScreen, LoggedInput};
-
-#[derive(Debug, Component)]
-pub struct InputLogger(Stack, TextInput);
-
-impl InputLogger {
-    fn new(ctx: &mut Context, input: TextInput) -> Self {
-        InputLogger(Stack::default(), input)
-    }
-}
-
-impl OnEvent for InputLogger {
-    fn on_event(&mut self, ctx: &mut Context, event: &mut dyn Event) -> bool {
-        if event.downcast_ref::<InputEditedEvent>().is_some() {
-            println!("In NewListScreen's text field, User entered: {}", self.1.value());
-            ctx.trigger_event(LoggedInput(self.1.value().clone()));
-        }
-        //TODO: redundant. delete when newlistscreen is debugged.
-        // if let Some(edited) = event.downcast_ref::<InputEditedEvent>() {
-        //     ctx.trigger_event(LoggedInput(self.1.value().clone()));
-        // }
-
-        true
-    }
-
-}
+use crate::{airlist, LandingScreen,};
 
 #[derive(Debug, Component)]
 pub struct NewListScreen(Stack, Page, #[skip]String);
@@ -43,7 +18,6 @@ impl OnEvent for NewListScreen {
                 self.2 = input.value().clone();
                 println!("NewListScreen captured text: {}", self.2);
             }
-
         }
         true
     }
@@ -84,7 +58,7 @@ impl NewListScreen {
             "AirList",
             Some(return_to_landingscreen_icon)
         );
-        let mut text_field = TextInput::new(
+        let text_field = TextInput::new(
             ctx,
             None,
             None,
@@ -92,13 +66,6 @@ impl NewListScreen {
             None,
             TextInput::NO_ICON,
             true);
-
-        // let captured_text = text_field.value().clone();
-
-        //let string_from_text_field = text_field.value().clone();
-        //todo: uncomment this and put back in content to have InputLogger's
-        //todo: OnEvent printf work.
-        // let logger = InputLogger::new(ctx, text_field);
 
         let content = Content::new(
             ctx,

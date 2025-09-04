@@ -10,26 +10,6 @@ use std::collections::BTreeMap;
 use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent, TextInput, InputEditedEvent, ListItem};
 use crate::airlist::NewListScreen;
 
-#[derive(Debug)]
-pub struct LoggedInput(pub String);
-
-impl OnEvent for LoggedInput {
-    fn on_event(&mut self, ctx: &mut Context, event: &mut dyn Event) -> bool {
-        if event.downcast_ref::<InputEditedEvent>().is_some() {
-            //todo: this printf doesn't fire.
-            println!("Wonder");
-            // ctx.trigger_event(LoggedInput(self.1.value().clone()));
-        }
-        true
-    }
-}
-
-impl Event for LoggedInput {
-    fn pass(self: Box<Self>, _ctx: &mut Context, children: Vec<((f32, f32), (f32, f32))>) -> Vec<Option<Box<dyn Event>>> {
-        vec![Some(self)]
-    }
-}
-
 // Define the main application struct. This is our entry point type.
 pub struct MyApp;
 
@@ -64,26 +44,8 @@ pub struct LandingScreen(Stack, Page);
 
 impl OnEvent for LandingScreen {
     fn on_event(&mut self, ctx: &mut Context, event: &mut dyn Event) -> bool {
-        if let Some(LoggedInput(text)) = event.downcast_ref::<LoggedInput>() {
-            let font_size = ctx.theme.fonts.size;
-            let t = Text::new(
-                ctx,
-                text.as_str(),
-                TextStyle::Primary,
-                font_size.md,
-                Align::Left,
-            );
-            self.1.content().items().push(Box::new(t));
-            //TODO: This printf doesn't fire.
-            println!("orange");
-
-            // return true;
-        }
         true
-        // if event.downcast_ref::<InputEditedEvent>().is_some() {
-        //     let current = NewListScreen.1;
         }
-
     }
 
 
