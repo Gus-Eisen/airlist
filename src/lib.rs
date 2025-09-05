@@ -40,13 +40,13 @@ impl Application for MyApp {
 start!(MyApp);
 
 #[derive(Debug, Component)]
-pub struct LandingScreen(Stack, Page);
+pub struct LandingScreen(Stack, Page, #[skip]String);
 
 impl OnEvent for LandingScreen {
     fn on_event(&mut self, ctx: &mut Context, event: &mut dyn Event) -> bool {
         true
-        }
     }
+}
 
 // Implement the AppPage trait for navigation and UI behavior
 impl AppPage for LandingScreen {
@@ -118,6 +118,14 @@ impl LandingScreen {
             vec![Box::new(text), Box::new(subtext)]
         );
 
-        LandingScreen(Stack::default(), Page::new(Some(header), content, None))
+        LandingScreen(Stack::default(), Page::new(Some(header), content, None), String::new())
+    }
+
+    //a constructor to receive the text from NewListScreen during navigation.
+    pub fn with_list(ctx: &mut Context, text: String) -> Self {
+        let mut screen = Self::new(ctx);
+        screen.2 = text;
+        println!("with_list's String: {}", &screen.2);
+        screen
     }
 }

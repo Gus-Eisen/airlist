@@ -30,7 +30,7 @@ impl AppPage for NewListScreen {
 
     fn navigate(self: Box<Self>, ctx: &mut Context, index: usize) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
         match index {
-            0 => Ok(Box::new(LandingScreen::new(ctx))),
+            0 => Ok(Box::new(LandingScreen::with_list(ctx, self.2.clone()))),
             _ => Err(self),
         }
     }
