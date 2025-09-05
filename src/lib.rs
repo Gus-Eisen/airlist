@@ -48,8 +48,6 @@ impl OnEvent for LandingScreen {
         }
     }
 
-
-
 // Implement the AppPage trait for navigation and UI behavior
 impl AppPage for LandingScreen {
     // This screen does not have a navigation bar
@@ -80,7 +78,6 @@ impl LandingScreen {
             ctx,
             // The text on this header will say "AirList"
             "AirList",
-            // TODO: delete this if keeping Some: There will not be an icon button on this header
             Some(new_list_icon)
         );
 
@@ -112,29 +109,13 @@ impl LandingScreen {
             None
         );
 
-        let logged_notes = ListItem::new(
-            ctx,
-            true,
-            "test",
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            false,
-            |ctx: &mut Context| println!("Orange")
-        );
-
         // Combine icon, heading, and subtext into page content
         let content = Content::new(
             ctx,
             // Vertically center items
             Offset::Center,
             // All items must be boxed as Box<dyn Drawable>
-            vec![Box::new(text), Box::new(subtext), Box::new(logged_notes)]
+            vec![Box::new(text), Box::new(subtext)]
         );
 
         LandingScreen(Stack::default(), Page::new(Some(header), content, None))
