@@ -129,6 +129,16 @@ impl LandingScreen {
         if screen.2.is_empty() {
             return screen
         }
+        let items = screen.1.content().items();
+        //TODO: this if block is not elegant.
+        if items.len() >= 2 {
+            let first_is_text = items[0].as_any().is::<Text>();
+            let second_is_expandable = items[1].as_any().is::<ExpandableText>();
+            if first_is_text && second_is_expandable {
+                items.remove(0);
+                items.remove(0);
+            }
+        }
         let expandable_text = ExpandableText::new(
             ctx,
             screen.2.as_str(),
