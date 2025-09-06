@@ -130,7 +130,9 @@ impl LandingScreen {
             return screen
         }
         let items = screen.1.content().items();
-        //TODO: this if block is not elegant.
+        /*
+        TODO: this if block removes stock text on LandingScreen. It is not elegant.
+         */
         if items.len() >= 2 {
             let first_is_text = items[0].as_any().is::<Text>();
             let second_is_expandable = items[1].as_any().is::<ExpandableText>();
@@ -145,7 +147,7 @@ impl LandingScreen {
             TextStyle::Primary,
             ctx.theme.fonts.size.md,
             Align::Center,
-            None
+            Some(1)
         );
         screen.1.content().items().push(Box::new(expandable_text));
         screen
