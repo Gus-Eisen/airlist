@@ -31,6 +31,7 @@ impl AppPage for NewListScreen {
     fn navigate(self: Box<Self>, ctx: &mut Context, index: usize) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
         match index {
             0 => Ok(Box::new(LandingScreen::with_list(ctx, self.2.clone()))),
+            // 1 => Ok(Box::new(LandingScreen::))
             _ => Err(self),
         }
     }
@@ -67,6 +68,43 @@ impl NewListScreen {
             TextInput::NO_ICON,
             true);
 
+        let content = Content::new(
+            ctx,
+            Offset::Start,
+            // All items must be boxed as Box<dyn Drawable>
+            vec![Box::new(text_field)]
+        );
+        NewListScreen(Stack::default(), Page::new(Some(header), content, None), String::new())
+    }
+
+    pub fn edit(ctx: &mut Context, user_text: &str) -> Self {
+        let return_to_landingscreen_icon = IconButton::new(
+            ctx,
+            "backspace",
+            ButtonSize::Medium,
+            ButtonStyle::Secondary,
+            ButtonState::Default,
+            Box::new(|ctx: &mut Context| {
+                println!("return_to_landingscreen_icon clicked.");
+                ctx.trigger_event(NavigateEvent(0));
+            }),
+            None,
+        );
+        let header = Header::home(
+            // The majority of UI components will require the app context.
+            ctx,
+            // The text on this header will say "AirList"
+            "AirList",
+            Some(return_to_landingscreen_icon)
+        );
+        let text_field = TextInput::new(
+            ctx,
+            Some(user_text),
+            None,
+            "Edit list here.",
+            None,
+            TextInput::NO_ICON,
+            true);
         let content = Content::new(
             ctx,
             Offset::Start,

@@ -56,6 +56,10 @@ impl AppPage for LandingScreen {
     fn navigate(self: Box<Self>, ctx: &mut Context, index: usize) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
         match index {
             0 => Ok(Box::new(NewListScreen::new(ctx))),
+            1 => {
+                let text = self.2.clone();
+                Ok(Box::new(NewListScreen::edit(ctx, &text)))
+            }
             _ => Err(self),
         }
     }
@@ -151,10 +155,13 @@ impl LandingScreen {
             None,
             None,
             None,
-            Some(AvatarContent::Icon("wifi", AvatarIconStyle::Success)),
+            Some(AvatarContent::Icon("edit", AvatarIconStyle::Primary)),
             None,
             true,
-            |ctx: &mut Context| println!("Clicked Wi-Fi")
+            move |ctx: &mut Context| {
+                println!("Clicked edit");
+                ctx.trigger_event(NavigateEvent(1));
+            }
         );
         // let expandable_text = ExpandableText::new(
         //     ctx,
