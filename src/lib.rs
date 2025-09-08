@@ -7,7 +7,7 @@ use pelican_ui::layout::{Layout, SizeRequest, Area};
 use pelican_ui::events::{Event, OnEvent};
 use std::collections::BTreeMap;
 
-use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent, TextInput, InputEditedEvent, ListItem};
+use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent, TextInput, InputEditedEvent, ListItem, AvatarContent, AvatarIconStyle};
 use crate::airlist::NewListScreen;
 
 // Define the main application struct. This is our entry point type.
@@ -141,15 +141,30 @@ impl LandingScreen {
                 items.remove(0);
             }
         }
-        let expandable_text = ExpandableText::new(
+        let test_list_item = ListItem::new(
             ctx,
-            screen.2.as_str(),
-            TextStyle::Primary,
-            ctx.theme.fonts.size.md,
-            Align::Center,
-            Some(1)
+            false,
+            &format!("{}", screen.2.chars().take(10).collect::<String>()),
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            Some(AvatarContent::Icon("wifi", AvatarIconStyle::Success)),
+            None,
+            true,
+            |ctx: &mut Context| println!("Clicked Wi-Fi")
         );
-        screen.1.content().items().push(Box::new(expandable_text));
+        // let expandable_text = ExpandableText::new(
+        //     ctx,
+        //     screen.2.as_str(),
+        //     TextStyle::Primary,
+        //     ctx.theme.fonts.size.md,
+        //     Align::Center,
+        //     Some(1)
+        // );
+        screen.1.content().items().push(Box::new(test_list_item));
         screen
     }
 }
