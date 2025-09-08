@@ -5,7 +5,7 @@ use pelican_ui::layout::{Layout, SizeRequest, Area};
 use pelican_ui::events::{Event, OnEvent};
 use std::collections::BTreeMap;
 use maverick_os::window::EventHandler;
-use pelican_ui_std::{Interface, InputEditedEvent, Stack, Page, Text, TextInput, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent};
+use pelican_ui_std::{Interface, InputEditedEvent, Stack, Page, Text, TextInput, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent, NavigatorEvent};
 use crate::{airlist, LandingScreen,};
 
 #[derive(Debug, Component)]
@@ -111,6 +111,6 @@ impl NewListScreen {
             // All items must be boxed as Box<dyn Drawable>
             vec![Box::new(text_field)]
         );
-        NewListScreen(Stack::default(), Page::new(Some(header), content, None), String::new())
+        NewListScreen(Stack::default(), Page::new(Some(header), content, None), user_text.to_owned())
     }
 }
