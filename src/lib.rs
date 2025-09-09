@@ -126,7 +126,7 @@ impl LandingScreen {
     }
 
     //a constructor to receive the text from NewListScreen during navigation.
-    pub fn with_list(ctx: &mut Context, mut text: String) -> Self {
+    pub fn with_list(ctx: &mut Context, text: String) -> Self {
         let mut screen = Self::new(ctx);
         screen.2 = text;
         println!("with_list's captured String from NewListScreen: {}", &screen.2);
@@ -145,10 +145,10 @@ impl LandingScreen {
                 items.remove(0);
             }
         }
-        let test_list_item = ListItem::new(
+        let list_item = ListItem::new(
             ctx,
             false,
-            &format!("{}", screen.2.chars().take(10).collect::<String>()),
+            &format!("{}", screen.2.chars().take(30).collect::<String>()),
             None,
             None,
             None,
@@ -163,15 +163,7 @@ impl LandingScreen {
                 ctx.trigger_event(NavigateEvent(1));
             }
         );
-        // let expandable_text = ExpandableText::new(
-        //     ctx,
-        //     screen.2.as_str(),
-        //     TextStyle::Primary,
-        //     ctx.theme.fonts.size.md,
-        //     Align::Center,
-        //     Some(1)
-        // );
-        screen.1.content().items().push(Box::new(test_list_item));
+        screen.1.content().items().push(Box::new(list_item));
         screen
     }
 }
