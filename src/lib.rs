@@ -7,7 +7,7 @@ use pelican_ui::layout::{Layout, SizeRequest, Area};
 use pelican_ui::events::{Event, OnEvent};
 
 use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, ExpandableText, Header, AppPage, IconButton, NavigateEvent, ListItem, AvatarContent, AvatarIconStyle};
-use crate::airlist::airlist::ListEditor;
+use crate::airlist::airlist::ListEditorScreen;
 
 // Define the main application struct. This is our entry point type.
 pub struct MyApp;
@@ -54,10 +54,10 @@ impl AppPage for LandingScreen {
 
     fn navigate(self: Box<Self>, ctx: &mut Context, index: usize) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
         match index {
-            0 => Ok(Box::new(ListEditor::new(ctx))),
+            0 => Ok(Box::new(ListEditorScreen::new(ctx))),
             1 => {
                 let text = self.2.clone();
-                Ok(Box::new(ListEditor::edit(ctx, &text)))
+                Ok(Box::new(ListEditorScreen::edit(ctx, &text)))
             }
             _ => Err(self),
         }

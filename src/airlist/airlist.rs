@@ -7,9 +7,9 @@ use crate::{LandingScreen,};
 use chrono::prelude::*;
 
 #[derive(Debug, Component)]
-pub struct ListEditor(Stack, Page, #[skip]String);
+pub struct ListEditorScreen(Stack, Page, #[skip]String);
 
-impl OnEvent for ListEditor {
+impl OnEvent for ListEditorScreen {
     fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn Event) -> bool {
         if event.downcast_ref::<InputEditedEvent>().is_some() {
             if let Some(input) = self.1.content().find::<TextInput>() {
@@ -22,7 +22,7 @@ impl OnEvent for ListEditor {
 }
 
 // Implement the AppPage trait for navigation and UI behavior
-impl AppPage for ListEditor {
+impl AppPage for ListEditorScreen {
     // This screen does not have a navigation bar
     fn has_nav(&self) -> bool { false }
 
@@ -35,7 +35,7 @@ impl AppPage for ListEditor {
     }
 }
 
-impl ListEditor {
+impl ListEditorScreen {
     pub fn new(ctx: &mut Context) -> Self {
         let return_to_landingscreen_icon = IconButton::new(
             ctx,
@@ -72,7 +72,7 @@ impl ListEditor {
             // All items must be boxed as Box<dyn Drawable>
             vec![Box::new(text_field)]
         );
-        ListEditor(Stack::default(), Page::new(Some(header), content, None), String::new())
+        ListEditorScreen(Stack::default(), Page::new(Some(header), content, None), String::new())
     }
 
     pub fn edit(ctx: &mut Context, user_text: &str) -> Self {
@@ -109,7 +109,7 @@ impl ListEditor {
             // All items must be boxed as Box<dyn Drawable>
             vec![Box::new(text_field)]
         );
-        ListEditor(Stack::default(), Page::new(Some(header), content, None), user_text.to_owned())
+        ListEditorScreen(Stack::default(), Page::new(Some(header), content, None), user_text.to_owned())
     }
 }
 
