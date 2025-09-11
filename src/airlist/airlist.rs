@@ -28,7 +28,12 @@ impl AppPage for ListEditorScreen {
 
     fn navigate(self: Box<Self>, ctx: &mut Context, index: usize) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
         match index {
-            0 => Ok(Box::new(LandingScreen::with_list(ctx, self.2.clone()))),
+            0 => {
+                let list = List::new(self.2.clone());
+                let list_container: &mut ListContainer = ctx.state().get_named_mut("list_container").unwrap();
+                list_container.set(list);
+                println!("ListEditorScreen navigate to LandingScreen; list_container: {:?}", &list_container);
+                Ok(Box::new(LandingScreen::with_list(ctx, self.2.clone())))},
             // 1 => Ok(Box::new(LandingScreen::))
             _ => Err(self),
         }
@@ -150,4 +155,7 @@ impl ListContainer {
         }
     }
 
+    pub fn set(&mut self, list: List) {
+        self.vec_of_lists.push(list);
+    }
 }
