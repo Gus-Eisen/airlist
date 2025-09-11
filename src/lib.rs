@@ -8,7 +8,7 @@ use pelican_ui::events::{Event, OnEvent};
 use std::collections::BTreeMap;
 
 use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent, TextInput, InputEditedEvent, ListItem, AvatarContent, AvatarIconStyle};
-use crate::airlist::NewListScreen;
+use crate::airlist::airlist::ListEditor;
 
 // Define the main application struct. This is our entry point type.
 pub struct MyApp;
@@ -55,10 +55,10 @@ impl AppPage for LandingScreen {
 
     fn navigate(self: Box<Self>, ctx: &mut Context, index: usize) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
         match index {
-            0 => Ok(Box::new(NewListScreen::new(ctx))),
+            0 => Ok(Box::new(ListEditor::new(ctx))),
             1 => {
                 let text = self.2.clone();
-                Ok(Box::new(NewListScreen::edit(ctx, &text)))
+                Ok(Box::new(ListEditor::edit(ctx, &text)))
             }
             _ => Err(self),
         }
@@ -127,6 +127,7 @@ impl LandingScreen {
 
     //a constructor to receive the text from NewListScreen during navigation.
     pub fn with_list(ctx: &mut Context, text: String) -> Self {
+        //todo: this is why previous lists don't persist.
         let mut screen = Self::new(ctx);
         screen.2 = text;
         println!("with_list's captured String from NewListScreen: {}", &screen.2);

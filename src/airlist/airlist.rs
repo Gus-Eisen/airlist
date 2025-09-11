@@ -5,13 +5,14 @@ use pelican_ui::layout::{Layout, SizeRequest, Area};
 use pelican_ui::events::{Event, OnEvent};
 use std::collections::BTreeMap;
 use maverick_os::window::EventHandler;
-use pelican_ui_std::{Interface, InputEditedEvent, Stack, Page, Text, TextInput, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent, NavigatorEvent};
+use pelican_ui_std::{Interface, InputEditedEvent, Stack, Page, Text, TextInput, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent, NavigatorEvent, AvatarContent};
 use crate::{airlist, LandingScreen,};
+use chrono::prelude::*;
 
 #[derive(Debug, Component)]
-pub struct NewListScreen(Stack, Page, #[skip]String);
+pub struct ListEditor(Stack, Page, #[skip]String);
 
-impl OnEvent for NewListScreen {
+impl OnEvent for ListEditor {
     fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn Event) -> bool {
         if event.downcast_ref::<InputEditedEvent>().is_some() {
             if let Some(input) = self.1.content().find::<TextInput>() {
@@ -24,7 +25,7 @@ impl OnEvent for NewListScreen {
 }
 
 // Implement the AppPage trait for navigation and UI behavior
-impl AppPage for NewListScreen {
+impl AppPage for ListEditor {
     // This screen does not have a navigation bar
     fn has_nav(&self) -> bool { false }
 
@@ -37,7 +38,7 @@ impl AppPage for NewListScreen {
     }
 }
 
-impl NewListScreen {
+impl ListEditor {
     pub fn new(ctx: &mut Context) -> Self {
         let return_to_landingscreen_icon = IconButton::new(
             ctx,
@@ -74,7 +75,7 @@ impl NewListScreen {
             // All items must be boxed as Box<dyn Drawable>
             vec![Box::new(text_field)]
         );
-        NewListScreen(Stack::default(), Page::new(Some(header), content, None), String::new())
+        ListEditor(Stack::default(), Page::new(Some(header), content, None), String::new())
     }
 
     pub fn edit(ctx: &mut Context, user_text: &str) -> Self {
@@ -111,6 +112,33 @@ impl NewListScreen {
             // All items must be boxed as Box<dyn Drawable>
             vec![Box::new(text_field)]
         );
-        NewListScreen(Stack::default(), Page::new(Some(header), content, None), user_text.to_owned())
+        ListEditor(Stack::default(), Page::new(Some(header), content, None), user_text.to_owned())
     }
+}
+
+pub struct List {
+    date_time: DateTime<Utc>,
+    content: String
+}
+
+impl List {
+    pub fn new(content: String) -> Self {
+        Self {
+            date_time: Utc::now(),
+            content
+        }
+    }
+}
+
+pub struct ListContainer {
+    vec_of_lists: Vec<List>
+}
+
+impl ListContainer {
+    pub fn new(list: List) -> Self {
+        Self {
+            vec_of_lists: vec![list]
+        }
+    }
+    
 }

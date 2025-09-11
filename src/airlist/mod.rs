@@ -1,2 +1,2 @@
-mod airlist;
-pub use airlist::NewListScreen;
+pub(crate) mod airlist;
+pub use airlist::ListEditor;
