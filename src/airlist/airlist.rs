@@ -37,6 +37,7 @@ impl AppPage for ListEditorScreen {
 
 impl ListEditorScreen {
     pub fn new(ctx: &mut Context) -> Self {
+        println!("ListEditorScreen: {:?}", ctx.state().get_named::<String>("test"));
         let return_to_landingscreen_icon = IconButton::new(
             ctx,
             "backspace",
@@ -113,6 +114,7 @@ impl ListEditorScreen {
     }
 }
 
+#[derive(Debug)]
 pub struct List {
     date_time: DateTime<Utc>,
     content: String
@@ -127,9 +129,19 @@ impl List {
     }
 }
 
+#[derive(Debug)]
 pub struct ListContainer {
     vec_of_lists: Vec<List>
 }
+
+impl Default for ListContainer {
+    fn default() -> Self {
+        Self {
+            vec_of_lists: Vec::new(),
+        }
+    }
+}
+
 
 impl ListContainer {
     pub fn new(list: List) -> Self {
@@ -137,5 +149,5 @@ impl ListContainer {
             vec_of_lists: vec![list]
         }
     }
-    
+
 }

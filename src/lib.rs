@@ -7,7 +7,7 @@ use pelican_ui::layout::{Layout, SizeRequest, Area};
 use pelican_ui::events::{Event, OnEvent};
 
 use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, ExpandableText, Header, AppPage, IconButton, NavigateEvent, ListItem, AvatarContent, AvatarIconStyle};
-use crate::airlist::airlist::ListEditorScreen;
+use crate::airlist::airlist::{ListContainer, ListEditorScreen};
 
 // Define the main application struct. This is our entry point type.
 pub struct MyApp;
@@ -66,6 +66,9 @@ impl AppPage for LandingScreen {
 
 impl LandingScreen {
     pub fn new(ctx: &mut Context) -> Self {
+        let mut list_container = ListContainer::default();
+        ctx.state().set_named(String::from("list_container"), list_container);
+        println!("{:?}", ctx.state().get_named::<String>("test"));
         let new_list_icon = IconButton::navigation(
             ctx,
             "add",
