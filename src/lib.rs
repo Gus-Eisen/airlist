@@ -1,13 +1,12 @@
 mod airlist;
 
 use pelican_ui::{Component, Context, Plugins, Plugin, maverick_start, start, Application, PelicanEngine, MaverickOS};
-use pelican_ui::drawable::{Drawable, Component, Align, Color};
+use pelican_ui::drawable::{Drawable, Component, Align};
 use pelican_ui::runtime::{Services, ServiceList};
 use pelican_ui::layout::{Layout, SizeRequest, Area};
 use pelican_ui::events::{Event, OnEvent};
-use std::collections::BTreeMap;
 
-use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent, TextInput, InputEditedEvent, ListItem, AvatarContent, AvatarIconStyle};
+use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, ExpandableText, Header, AppPage, IconButton, NavigateEvent, ListItem, AvatarContent, AvatarIconStyle};
 use crate::airlist::airlist::ListEditor;
 
 // Define the main application struct. This is our entry point type.
@@ -20,7 +19,7 @@ impl Services for MyApp {
 }
 
 impl Plugins for MyApp {
-    fn plugins(ctx: &mut Context) -> Vec<Box<dyn Plugin>> {
+    fn plugins(_ctx: &mut Context) -> Vec<Box<dyn Plugin>> {
         vec![]
     }
 }
@@ -43,7 +42,7 @@ start!(MyApp);
 pub struct LandingScreen(Stack, Page, #[skip]String);
 
 impl OnEvent for LandingScreen {
-    fn on_event(&mut self, ctx: &mut Context, event: &mut dyn Event) -> bool {
+    fn on_event(&mut self, _ctx: &mut Context, _event: &mut dyn Event) -> bool {
         true
     }
 }

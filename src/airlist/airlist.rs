@@ -1,12 +1,9 @@
-use pelican_ui::{Component, Context, Plugins, Plugin, maverick_start, start, Application, PelicanEngine, MaverickOS};
-use pelican_ui::drawable::{Drawable, Component, Align, Color};
-use pelican_ui::runtime::{Services, ServiceList};
+use pelican_ui::{Component, Context};
+use pelican_ui::drawable::{Drawable, Component};
 use pelican_ui::layout::{Layout, SizeRequest, Area};
 use pelican_ui::events::{Event, OnEvent};
-use std::collections::BTreeMap;
-use maverick_os::window::EventHandler;
-use pelican_ui_std::{Interface, InputEditedEvent, Stack, Page, Text, TextInput, TextStyle, Offset, Content, Icon, ExpandableText, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent, NavigatorEvent, AvatarContent};
-use crate::{airlist, LandingScreen,};
+use pelican_ui_std::{InputEditedEvent, Stack, Page, TextInput, Offset, Content, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent};
+use crate::{LandingScreen,};
 use chrono::prelude::*;
 
 #[derive(Debug, Component)]
