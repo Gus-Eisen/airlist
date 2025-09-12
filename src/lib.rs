@@ -68,7 +68,7 @@ impl LandingScreen {
     pub fn new(ctx: &mut Context) -> Self {
         let mut list_container = ListContainer::default();
         ctx.state().set_named(String::from("list_container"), list_container);
-        println!("{:?}", ctx.state().get_named::<String>("test"));
+        println!("LandingScreen new() list_container: {:?}", ctx.state().get::<String>());
         let new_list_icon = IconButton::navigation(
             ctx,
             "add",
