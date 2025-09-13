@@ -81,6 +81,7 @@ impl ListEditorScreen {
         ListEditorScreen(Stack::default(), Page::new(Some(header), content, None), String::new())
     }
 
+    //variant of LES to edit list.
     pub fn edit(ctx: &mut Context, user_text: &str) -> Self {
         let return_to_landingscreen_icon = IconButton::new(
             ctx,
@@ -116,6 +117,12 @@ impl ListEditorScreen {
             vec![Box::new(text_field)]
         );
         ListEditorScreen(Stack::default(), Page::new(Some(header), content, None), user_text.to_owned())
+    }
+
+    pub fn get_list(&mut self) -> List {
+        let string_from_text_input = self.1.content().find::<TextInput>().unwrap().value();
+        let list = List::new(string_from_text_input.to_owned());
+        list
     }
 }
 

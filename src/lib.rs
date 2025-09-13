@@ -66,6 +66,10 @@ impl AppPage for LandingScreen {
 
 impl LandingScreen {
     pub fn new(ctx: &mut Context) -> Self {
+        // if ctx.state().get_named::<ListContainer>("list_container").is_some() {
+        //     Self::with_list()
+        // }
+        //create new list_container if none exists.
         let mut list_container = ListContainer::default();
         ctx.state().set_named(String::from("list_container"), list_container);
         println!("LandingScreen new() list_container: {:?}", ctx.state().get::<String>());
