@@ -120,6 +120,9 @@ impl ListEditorScreen {
     }
 
     pub fn get_list(&mut self) -> List {
+        /*TODO: unwrap will panic if string_from_text_input returns None. Does not handle
+        scenario where users deletes TextInput.
+         */
         let string_from_text_input = self.1.content().find::<TextInput>().unwrap().value();
         let list = List::new(string_from_text_input.to_owned());
         list
