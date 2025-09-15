@@ -82,13 +82,15 @@ impl LandingScreen {
         //     Self::with_list()
         // }
         //create new list_container if none exists.
-        let mut list_container = ListContainer::default();
-        ctx.state()
-            .set_named(String::from("list_container"), list_container);
-        println!(
-            "LandingScreen new() list_container: {:?}",
-            ctx.state().get::<String>()
-        );
+        if ctx
+            .state()
+            .get_named::<ListContainer>("list_container")
+            .is_none()
+        {
+            let list_container = ListContainer::default();
+            ctx.state()
+                .set_named(String::from("list_container"), list_container);
+        }
         let new_list_icon = IconButton::navigation(ctx, "add", |ctx: &mut Context| {
             println!("new_list_icon clicked.");
             ctx.trigger_event(NavigateEvent(0));
