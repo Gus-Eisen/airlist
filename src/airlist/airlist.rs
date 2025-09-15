@@ -197,4 +197,12 @@ impl ListContainer {
     pub fn set(&mut self, list: List) {
         self.vec_of_lists.push(list);
     }
+
+    pub fn get_ref(&self) -> &Self {
+        self
+    }
+
+    pub fn get_ref_vecoflists(&self) -> &Vec<List> {
+        &self.vec_of_lists
+    }
 }
