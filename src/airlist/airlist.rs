@@ -182,17 +182,9 @@ impl List {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct ListContainer {
     vec_of_lists: Vec<List>,
-}
-
-impl Default for ListContainer {
-    fn default() -> Self {
-        Self {
-            vec_of_lists: Vec::new(),
-        }
-    }
 }
 
 impl ListContainer {
