@@ -14,11 +14,11 @@ pub struct ListEditorScreen(Stack, Page, #[skip] String);
 
 impl OnEvent for ListEditorScreen {
     fn on_event(&mut self, ctx: &mut Context, event: &mut dyn Event) -> bool {
-        if event.downcast_ref::<InputEditedEvent>().is_some() {
-            if let Some(input) = self.1.content().find::<TextInput>() {
-                self.2 = input.value().clone();
-                println!("NewListScreen captured text: {}", self.2);
-            }
+        if event.downcast_ref::<InputEditedEvent>().is_some()
+            && let Some(input) = self.1.content().find::<TextInput>()
+        {
+            self.2 = input.value().clone();
+            println!("NewListScreen captured text: {}", self.2);
         }
         if event.downcast_ref::<NavigateEvent>().is_some() {
             let list = self.get_list();
