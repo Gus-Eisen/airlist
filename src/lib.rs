@@ -1,13 +1,19 @@
 mod airlist;
 
-use pelican_ui::{Component, Context, Plugins, Plugin, maverick_start, start, Application, PelicanEngine, MaverickOS};
-use pelican_ui::drawable::{Drawable, Component, Align};
-use pelican_ui::runtime::{Services, ServiceList};
-use pelican_ui::layout::{Layout, SizeRequest, Area};
+use pelican_ui::drawable::{Align, Component, Drawable};
 use pelican_ui::events::{Event, OnEvent};
+use pelican_ui::layout::{Area, Layout, SizeRequest};
+use pelican_ui::runtime::{ServiceList, Services};
+use pelican_ui::{
+    Application, Component, Context, MaverickOS, PelicanEngine, Plugin, Plugins, maverick_start,
+    start,
+};
 
-use pelican_ui_std::{Interface, Stack, Page, Text, TextStyle, Offset, Content, ExpandableText, Header, AppPage, IconButton, NavigateEvent, ListItem, AvatarContent, AvatarIconStyle};
 use crate::airlist::airlist::{ListContainer, ListEditorScreen};
+use pelican_ui_std::{
+    AppPage, AvatarContent, AvatarIconStyle, Content, ExpandableText, Header, IconButton,
+    Interface, ListItem, NavigateEvent, Offset, Page, Stack, Text, TextStyle,
+};
 
 // Define the main application struct. This is our entry point type.
 pub struct MyApp;
@@ -39,7 +45,7 @@ impl Application for MyApp {
 start!(MyApp);
 
 #[derive(Debug, Component)]
-pub struct LandingScreen(Stack, Page, #[skip]String);
+pub struct LandingScreen(Stack, Page, #[skip] String);
 
 impl OnEvent for LandingScreen {
     fn on_event(&mut self, _ctx: &mut Context, _event: &mut dyn Event) -> bool {
@@ -50,9 +56,15 @@ impl OnEvent for LandingScreen {
 // Implement the AppPage trait for navigation and UI behavior
 impl AppPage for LandingScreen {
     // This screen does not have a navigation bar
-    fn has_nav(&self) -> bool { false }
+    fn has_nav(&self) -> bool {
+        false
+    }
 
-    fn navigate(self: Box<Self>, ctx: &mut Context, index: usize) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
+    fn navigate(
+        self: Box<Self>,
+        ctx: &mut Context,
+        index: usize,
+    ) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
         match index {
             0 => Ok(Box::new(ListEditorScreen::new(ctx))),
             1 => {
@@ -71,16 +83,16 @@ impl LandingScreen {
         // }
         //create new list_container if none exists.
         let mut list_container = ListContainer::default();
-        ctx.state().set_named(String::from("list_container"), list_container);
-        println!("LandingScreen new() list_container: {:?}", ctx.state().get::<String>());
-        let new_list_icon = IconButton::navigation(
-            ctx,
-            "add",
-            |ctx: &mut Context| {
-                println!("new_list_icon clicked.");
-                ctx.trigger_event(NavigateEvent(0));
-            },
+        ctx.state()
+            .set_named(String::from("list_container"), list_container);
+        println!(
+            "LandingScreen new() list_container: {:?}",
+            ctx.state().get::<String>()
         );
+        let new_list_icon = IconButton::navigation(ctx, "add", |ctx: &mut Context| {
+            println!("new_list_icon clicked.");
+            ctx.trigger_event(NavigateEvent(0));
+        });
 
         // Create a header for the page
         let header = Header::home(
@@ -88,7 +100,7 @@ impl LandingScreen {
             ctx,
             // The text on this header will say "AirList"
             "AirList",
-            Some(new_list_icon)
+            Some(new_list_icon),
         );
 
         let font_size = ctx.theme.fonts.size;
@@ -102,7 +114,7 @@ impl LandingScreen {
             // The size will be h2
             font_size.h3,
             // The text alignment
-            Align::Center
+            Align::Center,
         );
 
         // Create subtext.
@@ -116,7 +128,7 @@ impl LandingScreen {
             // Center the text
             Align::Center,
             // No max lines
-            None
+            None,
         );
 
         // Combine icon, heading, and subtext into page content
@@ -125,10 +137,14 @@ impl LandingScreen {
             // Vertically center items
             Offset::Center,
             // All items must be boxed as Box<dyn Drawable>
-            vec![Box::new(text), Box::new(subtext)]
+            vec![Box::new(text), Box::new(subtext)],
         );
 
-        LandingScreen(Stack::default(), Page::new(Some(header), content, None), String::new())
+        LandingScreen(
+            Stack::default(),
+            Page::new(Some(header), content, None),
+            String::new(),
+        )
     }
 
     //a constructor to receive the text from NewListScreen during navigation.
@@ -136,9 +152,12 @@ impl LandingScreen {
         //todo: this is why previous lists don't persist.
         let mut screen = Self::new(ctx);
         screen.2 = text;
-        println!("with_list's captured String from NewListScreen: {}", &screen.2);
+        println!(
+            "with_list's captured String from NewListScreen: {}",
+            &screen.2
+        );
         if screen.2.is_empty() {
-            return screen
+            return screen;
         }
         let items = screen.1.content().items();
         /*
@@ -155,7 +174,7 @@ impl LandingScreen {
         let list_item = ListItem::new(
             ctx,
             false,
-            &format!("{}", screen.2.chars().take(30).collect::<String>()),
+            &screen.2.chars().take(30).collect::<String>().to_string(),
             None,
             None,
             None,
@@ -168,9 +187,10 @@ impl LandingScreen {
             move |ctx: &mut Context| {
                 println!("Clicked edit");
                 ctx.trigger_event(NavigateEvent(1));
-            }
+            },
         );
         screen.1.content().items().push(Box::new(list_item));
         screen
     }
 }
+
