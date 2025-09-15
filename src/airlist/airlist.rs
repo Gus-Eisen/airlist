@@ -1,13 +1,16 @@
-use pelican_ui::{Component, Context};
-use pelican_ui::drawable::{Drawable, Component};
-use pelican_ui::layout::{Layout, SizeRequest, Area};
-use pelican_ui::events::{Event, OnEvent};
-use pelican_ui_std::{InputEditedEvent, Stack, Page, TextInput, Offset, Content, Header, AppPage, IconButton, ButtonSize, ButtonStyle, ButtonState, NavigateEvent};
-use crate::{LandingScreen,};
+use crate::LandingScreen;
 use chrono::prelude::*;
+use pelican_ui::drawable::{Component, Drawable};
+use pelican_ui::events::{Event, OnEvent};
+use pelican_ui::layout::{Area, Layout, SizeRequest};
+use pelican_ui::{Component, Context};
+use pelican_ui_std::{
+    AppPage, ButtonSize, ButtonState, ButtonStyle, Content, Header, IconButton, InputEditedEvent,
+    NavigateEvent, Offset, Page, Stack, TextInput,
+};
 
 #[derive(Debug, Component)]
-pub struct ListEditorScreen(Stack, Page, #[skip]String);
+pub struct ListEditorScreen(Stack, Page, #[skip] String);
 
 impl OnEvent for ListEditorScreen {
     fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn Event) -> bool {
@@ -24,16 +27,27 @@ impl OnEvent for ListEditorScreen {
 // Implement the AppPage trait for navigation and UI behavior
 impl AppPage for ListEditorScreen {
     // This screen does not have a navigation bar
-    fn has_nav(&self) -> bool { false }
+    fn has_nav(&self) -> bool {
+        false
+    }
 
-    fn navigate(self: Box<Self>, ctx: &mut Context, index: usize) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
+    fn navigate(
+        self: Box<Self>,
+        ctx: &mut Context,
+        index: usize,
+    ) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
         match index {
             0 => {
                 let list = List::new(self.2.clone());
-                let list_container: &mut ListContainer = ctx.state().get_named_mut("list_container").unwrap();
+                let list_container: &mut ListContainer =
+                    ctx.state().get_named_mut("list_container").unwrap();
                 list_container.set(list);
-                println!("ListEditorScreen navigate to LandingScreen; list_container: {:?}", &list_container);
-                Ok(Box::new(LandingScreen::with_list(ctx, self.2.clone())))},
+                println!(
+                    "ListEditorScreen navigate to LandingScreen; list_container: {:?}",
+                    &list_container
+                );
+                Ok(Box::new(LandingScreen::with_list(ctx, self.2.clone())))
+            }
             // 1 => Ok(Box::new(LandingScreen::))
             _ => Err(self),
         }
@@ -42,7 +56,10 @@ impl AppPage for ListEditorScreen {
 
 impl ListEditorScreen {
     pub fn new(ctx: &mut Context) -> Self {
-        println!("ListEditorScreen: {:?}", ctx.state().get_named::<String>("test"));
+        println!(
+            "ListEditorScreen: {:?}",
+            ctx.state().get_named::<String>("test")
+        );
         let return_to_landingscreen_icon = IconButton::new(
             ctx,
             "backspace",
@@ -61,7 +78,7 @@ impl ListEditorScreen {
             ctx,
             // The text on this header will say "AirList"
             "AirList",
-            Some(return_to_landingscreen_icon)
+            Some(return_to_landingscreen_icon),
         );
         let text_field = TextInput::new(
             ctx,
@@ -70,15 +87,20 @@ impl ListEditorScreen {
             "Enter list here.",
             None,
             TextInput::NO_ICON,
-            true);
+            true,
+        );
 
         let content = Content::new(
             ctx,
             Offset::Start,
             // All items must be boxed as Box<dyn Drawable>
-            vec![Box::new(text_field)]
+            vec![Box::new(text_field)],
         );
-        ListEditorScreen(Stack::default(), Page::new(Some(header), content, None), String::new())
+        ListEditorScreen(
+            Stack::default(),
+            Page::new(Some(header), content, None),
+            String::new(),
+        )
     }
 
     //variant of LES to edit list.
@@ -91,6 +113,7 @@ impl ListEditorScreen {
             ButtonState::Default,
             Box::new(|ctx: &mut Context| {
                 println!("return_to_landingscreen_icon clicked.");
+                //ListEditorScreen::get_list()
                 ctx.trigger_event(NavigateEvent(0));
             }),
             None,
@@ -100,7 +123,7 @@ impl ListEditorScreen {
             ctx,
             // The text on this header will say "AirList"
             "AirList",
-            Some(return_to_landingscreen_icon)
+            Some(return_to_landingscreen_icon),
         );
         let text_field = TextInput::new(
             ctx,
@@ -109,14 +132,19 @@ impl ListEditorScreen {
             "Edit list here.",
             None,
             TextInput::NO_ICON,
-            true);
+            true,
+        );
         let content = Content::new(
             ctx,
             Offset::Start,
             // All items must be boxed as Box<dyn Drawable>
-            vec![Box::new(text_field)]
+            vec![Box::new(text_field)],
         );
-        ListEditorScreen(Stack::default(), Page::new(Some(header), content, None), user_text.to_owned())
+        ListEditorScreen(
+            Stack::default(),
+            Page::new(Some(header), content, None),
+            user_text.to_owned(),
+        )
     }
 
     pub fn get_list(&mut self) -> List {
@@ -124,29 +152,28 @@ impl ListEditorScreen {
         scenario where users deletes TextInput.
          */
         let string_from_text_input = self.1.content().find::<TextInput>().unwrap().value();
-        let list = List::new(string_from_text_input.to_owned());
-        list
+        List::new(string_from_text_input.to_owned())
     }
 }
 
 #[derive(Debug)]
 pub struct List {
     date_time: DateTime<Utc>,
-    content: String
+    content: String,
 }
 
 impl List {
     pub fn new(content: String) -> Self {
         Self {
             date_time: Utc::now(),
-            content
+            content,
         }
     }
 }
 
 #[derive(Debug)]
 pub struct ListContainer {
-    vec_of_lists: Vec<List>
+    vec_of_lists: Vec<List>,
 }
 
 impl Default for ListContainer {
@@ -157,11 +184,10 @@ impl Default for ListContainer {
     }
 }
 
-
 impl ListContainer {
     pub fn new(list: List) -> Self {
         Self {
-            vec_of_lists: vec![list]
+            vec_of_lists: vec![list],
         }
     }
 
