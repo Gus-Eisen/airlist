@@ -151,7 +151,6 @@ impl LandingScreen {
 
     //a constructor to receive the text from NewListScreen during navigation.
     pub fn with_list(ctx: &mut Context, text: String) -> Self {
-        //todo: this is why previous lists don't persist.
         let mut screen = Self::new(ctx);
         screen.2 = text;
         println!(
@@ -173,25 +172,34 @@ impl LandingScreen {
                 items.remove(0);
             }
         }
-        let list_item = ListItem::new(
+        // let list_item = ListItem::new(
+        //     ctx,
+        //     false,
+        //     &screen.2.chars().take(30).collect::<String>().to_string(),
+        //     None,
+        //     None,
+        //     None,
+        //     None,
+        //     None,
+        //     None,
+        //     Some(AvatarContent::Icon("edit", AvatarIconStyle::Primary)),
+        //     None,
+        //     true,
+        //     move |ctx: &mut Context| {
+        //         println!("Clicked edit");
+        //         ctx.trigger_event(NavigateEvent(1));
+        //     },
+        // );
+        // screen.1.content().items().push(Box::new(list_item));
+
+        /* Get a vec of list_items, then iterate through and push to Content.*/
+        let vec_listitem = Self::vec_listitem_builder(
             ctx,
-            false,
-            &screen.2.chars().take(30).collect::<String>().to_string(),
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            Some(AvatarContent::Icon("edit", AvatarIconStyle::Primary)),
-            None,
-            true,
-            move |ctx: &mut Context| {
-                println!("Clicked edit");
-                ctx.trigger_event(NavigateEvent(1));
-            },
+            ctx.state()
+                .get_named::<ListContainer>("list_container")
+                .unwrap()
+                .get_ref_veclist(),
         );
-        screen.1.content().items().push(Box::new(list_item));
         screen
     }
     pub fn vec_listitem_builder(ctx: &mut Context, vec_list: &[List]) -> Vec<ListItem> {

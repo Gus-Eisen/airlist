@@ -13,7 +13,7 @@ use pelican_ui_std::{
 pub struct ListEditorScreen(Stack, Page, #[skip] String);
 
 impl OnEvent for ListEditorScreen {
-    fn on_event(&mut self, ctx: &mut Context, event: &mut dyn Event) -> bool {
+    fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn Event) -> bool {
         if event.downcast_ref::<InputEditedEvent>().is_some()
             && let Some(input) = self.1.content().find::<TextInput>()
         {
@@ -206,7 +206,7 @@ impl ListContainer {
         self
     }
 
-    pub fn get_ref_vecoflists(&self) -> &Vec<List> {
+    pub fn get_ref_veclist(&self) -> &Vec<List> {
         &self.vec_of_lists
     }
 }
