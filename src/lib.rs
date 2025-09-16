@@ -1,5 +1,7 @@
 mod airlist;
 
+use std::clone;
+
 use pelican_ui::drawable::{Align, Component, Drawable};
 use pelican_ui::events::{Event, OnEvent};
 use pelican_ui::layout::{Area, Layout, SizeRequest};
@@ -193,13 +195,15 @@ impl LandingScreen {
         // screen.1.content().items().push(Box::new(list_item));
 
         /* Get a vec of list_items, then iterate through and push to Content.*/
-        let vec_listitem = Self::vec_listitem_builder(
-            ctx,
+        let state = {
             ctx.state()
                 .get_named::<ListContainer>("list_container")
                 .unwrap()
-                .get_ref_veclist(),
-        );
+                .get_ref_veclist()
+                .clone()
+        }; // The mutable borrow ends here
+
+        let vec_listitem = Self::vec_listitem_builder(ctx, state);
         screen
     }
     pub fn vec_listitem_builder(ctx: &mut Context, vec_list: &[List]) -> Vec<ListItem> {
