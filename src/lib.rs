@@ -194,14 +194,12 @@ impl LandingScreen {
         // );
         // screen.1.content().items().push(Box::new(list_item));
 
-        /* Get a vec of list_items, then iterate through and push to Content.*/
-        let state = {
-            ctx.state()
-                .get_named::<ListContainer>("list_container")
-                .unwrap()
-                .get_ref_veclist()
-                .clone()
-        }; // The mutable borrow ends here
+        /* Get a vec of Lists, then build a vec of list_items, then iterate through and push to Content.*/
+        let veclist = ctx
+            .state()
+            .get_named::<ListContainer>("list_container")
+            .unwrap()
+            .get_ref_veclist();
 
         let vec_listitem = Self::vec_listitem_builder(ctx, state);
         screen
