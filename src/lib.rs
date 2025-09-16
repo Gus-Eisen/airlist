@@ -9,7 +9,7 @@ use pelican_ui::{
     start,
 };
 
-use crate::airlist::airlist::{ListContainer, ListEditorScreen};
+use crate::airlist::airlist::{List, ListContainer, ListEditorScreen};
 use pelican_ui_std::{
     AppPage, AvatarContent, AvatarIconStyle, Content, ExpandableText, Header, IconButton,
     Interface, ListItem, NavigateEvent, Offset, Page, Stack, Text, TextStyle,
@@ -194,5 +194,31 @@ impl LandingScreen {
         screen.1.content().items().push(Box::new(list_item));
         screen
     }
-}
+    pub fn vec_listitem_builder(ctx: &mut Context, vec_list: &[List]) -> Vec<ListItem> {
+        let vec_listitem: Vec<ListItem> = vec_list
+            .iter()
+            .map(|x| {
+                ListItem::new(
+                    ctx,
+                    false,
+                    x.get_content(),
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    Some(AvatarContent::Icon("edit", AvatarIconStyle::Primary)),
+                    None,
+                    true,
+                    move |ctx: &mut Context| {
+                        println!("Clicked edit");
+                        ctx.trigger_event(NavigateEvent(1));
+                    },
+                )
+            })
+            .collect();
 
+        vec_listitem
+    }
+}

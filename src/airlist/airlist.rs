@@ -180,6 +180,10 @@ impl List {
             content,
         }
     }
+
+    pub fn get_content(&self) -> &String {
+        &self.content
+    }
 }
 
 #[derive(Debug, Default)]
