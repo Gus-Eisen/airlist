@@ -195,13 +195,14 @@ impl LandingScreen {
         // screen.1.content().items().push(Box::new(list_item));
 
         /* Get a vec of Lists, then build a vec of list_items, then iterate through and push to Content.*/
-        let veclist = ctx
+        let veclist: Vec<List> = ctx
             .state()
             .get_named::<ListContainer>("list_container")
             .unwrap()
-            .get_ref_veclist();
+            .get_ref_veclist()
+            .clone();
 
-        let vec_listitem = Self::vec_listitem_builder(ctx, state);
+        let vec_listitem = Self::vec_listitem_builder(ctx, &veclist);
         screen
     }
     pub fn vec_listitem_builder(ctx: &mut Context, vec_list: &[List]) -> Vec<ListItem> {

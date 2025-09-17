@@ -167,7 +167,7 @@ impl ListEditorScreen {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct List {
     date_time: DateTime<Utc>,
     content: String,
