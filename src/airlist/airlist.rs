@@ -48,7 +48,6 @@ impl AppPage for ListEditorScreen {
                 );
                 Ok(Box::new(LandingScreen::with_list(ctx, self.2.clone())))
             }
-            // 1 => Ok(Box::new(LandingScreen::))
             _ => Err(self),
         }
     }
@@ -56,10 +55,6 @@ impl AppPage for ListEditorScreen {
 
 impl ListEditorScreen {
     pub fn new(ctx: &mut Context) -> Self {
-        println!(
-            "ListEditorScreen: {:?}",
-            ctx.state().get_named::<String>("test")
-        );
         let return_to_landingscreen_icon = IconButton::new(
             ctx,
             "backspace",
@@ -113,7 +108,6 @@ impl ListEditorScreen {
             ButtonState::Default,
             Box::new(|ctx: &mut Context| {
                 println!("return_to_landingscreen_icon clicked.");
-                //ListEditorScreen::get_list()
                 ctx.trigger_event(NavigateEvent(0));
             }),
             None,
