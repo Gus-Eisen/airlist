@@ -1,7 +1,5 @@
 mod airlist;
 
-use std::clone;
-
 use pelican_ui::drawable::{Align, Component, Drawable};
 use pelican_ui::events::{Event, OnEvent};
 use pelican_ui::layout::{Area, Layout, SizeRequest};
@@ -80,9 +78,6 @@ impl AppPage for LandingScreen {
 
 impl LandingScreen {
     pub fn new(ctx: &mut Context) -> Self {
-        // if ctx.state().get_named::<ListContainer>("list_container").is_some() {
-        //     Self::with_list()
-        // }
         //create new list_container if none exists.
         if ctx
             .state()
@@ -163,9 +158,7 @@ impl LandingScreen {
             return screen;
         }
         let items = screen.1.content().items();
-        /*
-        TODO: this if block removes stock text on LandingScreen. It is not elegant.
-         */
+        // this if block removes stock text on LandingScreen.
         if items.len() >= 2 {
             let first_is_text = items[0].as_any().is::<Text>();
             let second_is_expandable = items[1].as_any().is::<ExpandableText>();

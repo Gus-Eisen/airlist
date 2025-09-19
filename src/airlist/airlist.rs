@@ -20,17 +20,6 @@ impl OnEvent for ListEditorScreen {
             self.2 = input.value().clone();
             println!("NewListScreen captured text: {}", self.2);
         }
-        // if event.downcast_ref::<NavigateEvent>().is_some() {
-        //     let list = self.get_list();
-        //     ctx.state()
-        //         .get_named_mut::<ListContainer>("list_container")
-        //         .unwrap()
-        //         .set(list);
-        //     println!(
-        //         "ListEditorScreen on_event NavigateEvent; list_container: {:?}",
-        //         ctx.state().get_named::<ListContainer>("list_container")
-        //     );
-        // }
         true
     }
 }
