@@ -152,16 +152,12 @@ impl ListEditorScreen {
 
 #[derive(Debug, Clone)]
 pub struct List {
-    date_time: DateTime<Utc>,
     content: String,
 }
 
 impl List {
     pub fn new(content: String) -> Self {
-        Self {
-            date_time: Utc::now(),
-            content,
-        }
+        Self { content }
     }
 
     pub fn get_content(&self) -> &String {

@@ -1,5 +1,6 @@
 mod airlist;
 
+use crate::airlist::airlist::{List, ListContainer, ListEditorScreen};
 use pelican_ui::drawable::{Align, Component, Drawable};
 use pelican_ui::events::{Event, OnEvent};
 use pelican_ui::layout::{Area, Layout, SizeRequest};
@@ -8,12 +9,11 @@ use pelican_ui::{
     Application, Component, Context, MaverickOS, PelicanEngine, Plugin, Plugins, maverick_start,
     start,
 };
-
-use crate::airlist::airlist::{List, ListContainer, ListEditorScreen};
 use pelican_ui_std::{
     AppPage, AvatarContent, AvatarIconStyle, Content, ExpandableText, Header, IconButton,
     Interface, ListItem, NavigateEvent, Offset, Page, Stack, Text, TextStyle,
 };
+use std::sync::atomic::{AtomicUsize, Ordering};
 
 // Define the main application struct. This is our entry point type.
 pub struct MyApp;
