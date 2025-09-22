@@ -153,16 +153,24 @@ impl ListEditorScreen {
 
 #[derive(Debug, Clone)]
 pub struct List {
+    id: usize,
     content: String,
 }
 
 impl List {
-    pub fn new(content: String) -> Self {
-        Self { content }
+    pub fn new(atomic_counter: AtomicCounterForListID, content: String) -> Self {
+        Self {
+            id: atomic_counter.generate_id(),
+            content,
+        }
     }
 
     pub fn get_content(&self) -> &String {
         &self.content
+    }
+
+    pub fn get_id(&self) -> usize {
+        self.id
     }
 }
 
