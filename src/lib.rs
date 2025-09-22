@@ -193,11 +193,12 @@ impl LandingScreen {
     pub fn vec_listitem_builder(ctx: &mut Context, vec_list: &[List]) -> Vec<ListItem> {
         let vec_listitem: Vec<ListItem> = vec_list
             .iter()
-            .map(|x| {
+            .map(|list| {
+                let list_id = list.get_id();
                 ListItem::new(
                     ctx,
                     false,
-                    x.get_content(),
+                    list.get_content(),
                     None,
                     None,
                     None,
@@ -208,7 +209,9 @@ impl LandingScreen {
                     None,
                     true,
                     move |ctx: &mut Context| {
-                        println!("Clicked edit");
+                        println!("Clicked edit for list id: {}", list_id);
+                        ctx.state()
+                            .set_named(String::from("editing_list_id"), list_id);
                         ctx.trigger_event(NavigateEvent(1));
                     },
                 )
