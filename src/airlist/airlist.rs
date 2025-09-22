@@ -8,6 +8,7 @@ use pelican_ui_std::{
     AppPage, ButtonSize, ButtonState, ButtonStyle, Content, Header, IconButton, InputEditedEvent,
     NavigateEvent, Offset, Page, Stack, TextInput,
 };
+use std::sync::atomic::{AtomicUsize, Ordering};
 
 #[derive(Debug, Component)]
 pub struct ListEditorScreen(Stack, Page, #[skip] String);
@@ -187,5 +188,21 @@ impl ListContainer {
 
     pub fn get_ref_veclist(&self) -> &Vec<List> {
         &self.vec_of_lists
+    }
+}
+
+#[derive(Debug)]
+pub struct AtomicCounterForListID {
+    id: AtomicUsize,
+}
+
+impl AtomicCounterForListID {
+    pub fn new() -> Self {
+        Self {
+            id: AtomicUsize::new(0),
+        }
+    }
+    pub fn generate_id(&self) -> usize {
+        self.id.fetch_add(1, Ordering::Relaxed)
     }
 }

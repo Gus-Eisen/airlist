@@ -1,6 +1,6 @@
 mod airlist;
 
-use crate::airlist::airlist::{List, ListContainer, ListEditorScreen};
+use crate::airlist::airlist::{AtomicCounterForListID, List, ListContainer, ListEditorScreen};
 use pelican_ui::drawable::{Align, Component, Drawable};
 use pelican_ui::events::{Event, OnEvent};
 use pelican_ui::layout::{Area, Layout, SizeRequest};
@@ -13,7 +13,6 @@ use pelican_ui_std::{
     AppPage, AvatarContent, AvatarIconStyle, Content, ExpandableText, Header, IconButton,
     Interface, ListItem, NavigateEvent, Offset, Page, Stack, Text, TextStyle,
 };
-use std::sync::atomic::{AtomicUsize, Ordering};
 
 // Define the main application struct. This is our entry point type.
 pub struct MyApp;
@@ -87,6 +86,15 @@ impl LandingScreen {
             let list_container = ListContainer::default();
             ctx.state()
                 .set_named(String::from("list_container"), list_container);
+        }
+        if ctx
+            .state()
+            .get_named::<AtomicCounterForListID>("atomic_counter")
+            .is_none()
+        {
+            let atomic_counter = AtomicCounterForListID::new();
+            ctx.state()
+                .set_named(String::from("atomic_counter"), atomic_counter);
         }
         let new_list_icon = IconButton::navigation(ctx, "add", |ctx: &mut Context| {
             println!("new_list_icon clicked.");
