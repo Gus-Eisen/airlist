@@ -39,7 +39,13 @@ impl AppPage for ListEditorScreen {
     ) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
         match index {
             0 => {
-                let list = List::new(self.2.clone());
+                let list = List::new(
+                    ctx.state()
+                        .get_named::<AtomicCounterForListID>("atomic_counter")
+                        .unwrap()
+                        .generate_id(),
+                    self.2.clone(),
+                );
                 let list_container: &mut ListContainer =
                     ctx.state().get_named_mut("list_container").unwrap();
                 list_container.set(list);
@@ -142,12 +148,18 @@ impl ListEditorScreen {
         )
     }
 
-    pub fn get_list(&mut self) -> List {
+    pub fn get_list(&mut self, ctx: &mut Context) -> List {
         /*TODO: unwrap will panic if string_from_text_input returns None. Does not handle
         scenario where users deletes TextInput.
          */
         let string_from_text_input = self.1.content().find::<TextInput>().unwrap().value();
-        List::new(string_from_text_input.to_owned())
+        List::new(
+            ctx.state()
+                .get_named::<AtomicCounterForListID>("atomic_counter")
+                .unwrap()
+                .generate_id(),
+            string_from_text_input.to_owned(),
+        )
     }
 }
 
@@ -158,11 +170,8 @@ pub struct List {
 }
 
 impl List {
-    pub fn new(atomic_counter: AtomicCounterForListID, content: String) -> Self {
-        Self {
-            id: atomic_counter.generate_id(),
-            content,
-        }
+    pub fn new(id: usize, content: String) -> Self {
+        Self { id, content }
     }
 
     pub fn get_content(&self) -> &String {
