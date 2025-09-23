@@ -46,6 +46,7 @@ impl AppPage for ListEditorScreen {
                     .unwrap()
                     .value()
                     .clone();
+                //we want to fire LS::new() if User doesn't enter text and has no prior Lists.
                 if string_from_text_input.is_empty()
                     && ctx
                         .state()
