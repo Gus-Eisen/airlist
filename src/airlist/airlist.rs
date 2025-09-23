@@ -46,6 +46,9 @@ impl AppPage for ListEditorScreen {
                     .unwrap()
                     .value()
                     .clone();
+                if string_from_text_input.is_empty() {
+                    return Ok(Box::new(LandingScreen::with_list(ctx)));
+                }
                 let list = List::new(
                     ctx.state()
                         .get_named::<AtomicCounterForListID>("atomic_counter")
@@ -60,7 +63,7 @@ impl AppPage for ListEditorScreen {
                     "ListEditorScreen navigate to LandingScreen; list_container: {:?}",
                     &list_container
                 );
-                Ok(Box::new(LandingScreen::with_list(ctx, self.2.clone())))
+                Ok(Box::new(LandingScreen::with_list(ctx)))
             }
             _ => Err(self),
         }
