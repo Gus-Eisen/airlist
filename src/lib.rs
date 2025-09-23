@@ -157,14 +157,15 @@ impl LandingScreen {
     //a constructor to receive the text from NewListScreen during navigation.
     pub fn with_list(ctx: &mut Context, text: String) -> Self {
         let mut screen = Self::new(ctx);
-        screen.2 = text;
-        println!(
-            "with_list's captured String from NewListScreen: {}",
-            &screen.2
-        );
-        if screen.2.is_empty() {
-            return screen;
-        }
+        //don't need this if not using String.
+        // screen.2 = text;
+        // println!(
+        //     "with_list's captured String from NewListScreen: {}",
+        //     &screen.2
+        // );
+        // if screen.2.is_empty() {
+        //     return screen;
+        // }
         let items = screen.1.content().items();
         // this if block removes stock text on LandingScreen.
         if items.len() >= 2 {

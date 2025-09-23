@@ -33,18 +33,25 @@ impl AppPage for ListEditorScreen {
     }
 
     fn navigate(
-        self: Box<Self>,
+        mut self: Box<Self>,
         ctx: &mut Context,
         index: usize,
     ) -> Result<Box<dyn AppPage>, Box<dyn AppPage>> {
         match index {
             0 => {
+                let string_from_text_input = self
+                    .1
+                    .content()
+                    .find::<TextInput>()
+                    .unwrap()
+                    .value()
+                    .clone();
                 let list = List::new(
                     ctx.state()
                         .get_named::<AtomicCounterForListID>("atomic_counter")
                         .unwrap()
                         .generate_id(),
-                    self.2.clone(),
+                    string_from_text_input,
                 );
                 let list_container: &mut ListContainer =
                     ctx.state().get_named_mut("list_container").unwrap();
