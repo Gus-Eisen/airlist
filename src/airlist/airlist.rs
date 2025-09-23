@@ -11,7 +11,7 @@ use pelican_ui_std::{
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 #[derive(Debug, Component)]
-pub struct ListEditorScreen(Stack, Page, #[skip] String);
+pub struct ListEditorScreen(Stack, Page, #[skip] String, #[skip] Option<usize>);
 
 impl OnEvent for ListEditorScreen {
     fn on_event(&mut self, _ctx: &mut Context, event: &mut dyn Event) -> bool {
@@ -118,11 +118,12 @@ impl ListEditorScreen {
             Stack::default(),
             Page::new(Some(header), content, None),
             String::new(),
+            None,
         )
     }
 
     //variant of LES to edit list.
-    pub fn edit(ctx: &mut Context, user_text: &str) -> Self {
+    pub fn edit(ctx: &mut Context, user_text: &str, list_id: usize) -> Self {
         let return_to_landingscreen_icon = IconButton::new(
             ctx,
             "backspace",
@@ -161,6 +162,7 @@ impl ListEditorScreen {
             Stack::default(),
             Page::new(Some(header), content, None),
             user_text.to_owned(),
+            Some(list_id),
         )
     }
 

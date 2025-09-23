@@ -67,8 +67,30 @@ impl AppPage for LandingScreen {
         match index {
             0 => Ok(Box::new(ListEditorScreen::new(ctx))),
             1 => {
-                let text = self.2.clone();
-                Ok(Box::new(ListEditorScreen::edit(ctx, &text)))
+                /*
+                 * This finds the correct List based off of it's ID, then injects that content
+                 * into ListEditorScreen String field for population into TextInput field.
+                 */
+                let list_id = ctx.state().get_named::<usize>("editing_list_id").copied();
+
+                if let Some(list_id) = list_id {
+                    let list_content = ctx
+                        .state()
+                        .get_named::<ListContainer>("list_container")
+                        .and_then(|list_container| {
+                            list_container
+                                .get_ref_veclist()
+                                .iter()
+                                .find(|list| list.get_id() == list_id)
+                                .map(|list| list.get_content().clone())
+                        });
+
+                    if let Some(content) = list_content {
+                        return Ok(Box::new(ListEditorScreen::edit(ctx, &content, list_id)));
+                    }
+                }
+                //fallback option in event where editing_list_id isn't found. Delete this?
+                Ok(Box::new(ListEditorScreen::new(ctx)))
             }
             _ => Err(self),
         }
