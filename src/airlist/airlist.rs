@@ -46,8 +46,13 @@ impl AppPage for ListEditorScreen {
                     .unwrap()
                     .value()
                     .clone();
-                if string_from_text_input.is_empty() {
-                    return Ok(Box::new(LandingScreen::with_list(ctx)));
+                if string_from_text_input.is_empty()
+                    && ctx
+                        .state()
+                        .get_named::<ListContainer>("list_container")
+                        .map_or(true, |container| container.get_ref_veclist().is_empty())
+                {
+                    return Ok(Box::new(LandingScreen::new(ctx)));
                 }
                 let list = List::new(
                     ctx.state()

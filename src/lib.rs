@@ -167,6 +167,9 @@ impl LandingScreen {
         //     return screen;
         // }
         let items = screen.1.content().items();
+        if items.is_empty() {
+            return Self::new(ctx);
+        }
         // this if block removes stock text on LandingScreen.
         if items.len() >= 2 {
             let first_is_text = items[0].as_any().is::<Text>();
