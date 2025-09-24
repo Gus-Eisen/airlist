@@ -46,6 +46,7 @@ impl AppPage for ListEditorScreen {
                     .unwrap()
                     .value()
                     .clone();
+                //fires if there are no prior lists and empty LES TextInput field.
                 if self.3.is_none()
                     && string_from_text_input.is_empty()
                     && ctx
@@ -55,28 +56,45 @@ impl AppPage for ListEditorScreen {
                 {
                     return Ok(Box::new(LandingScreen::new(ctx)));
                 }
-
-                if let Some(list_id) = self.3 {
-                    if string_from_text_input.is_empty() {
-                        let list_container: &mut ListContainer =
-                            ctx.state().get_named_mut("list_container").unwrap();
-                        if let Some(position) = list_container
-                            .get_refmut_veclist()
-                            .iter()
-                            .position(|list| list.get_id() == list_id)
-                        {
-                            let _ = list_container.get_refmut_veclist().remove(position);
+                //fires if there are no prior lists and LES TextInput field is populated.
+                if self.3.is_none() && !string_from_text_input.is_empty() {
+                    let list = List::new(
+                        ctx.state()
+                            .get_named::<AtomicCounterForListID>("atomic_counter")
+                            .unwrap()
+                            .generate_id(),
+                        string_from_text_input.clone(),
+                    );
+                    let list_container: &mut ListContainer =
+                        ctx.state().get_named_mut("list_container").unwrap();
+                    list_container.set(list);
+                    return Ok(Box::new(LandingScreen::with_list(ctx)));
+                }
+                //fires if User edits list but deletes all values from TextInput.
+                if self.3.is_some() && string_from_text_input.is_empty() {
+                    if let Some(list_id) = self.3 {
+                        if string_from_text_input.is_empty() {
+                            let list_container: &mut ListContainer =
+                                ctx.state().get_named_mut("list_container").unwrap();
+                            if let Some(position) = list_container
+                                .get_refmut_veclist()
+                                .iter()
+                                .position(|list| list.get_id() == list_id)
+                            {
+                                let _ = list_container.get_refmut_veclist().remove(position);
+                            }
                         }
-                    }
-                    //we want to fire LS::new() if User doesn't enter text and has no prior Lists.
-                    if string_from_text_input.is_empty()
-                        && ctx
-                            .state()
-                            .get_named::<ListContainer>("list_container")
-                            .map_or(true, |container| container.get_ref_veclist().is_empty())
-                    {
                         return Ok(Box::new(LandingScreen::new(ctx)));
                     }
+                    //we want to fire LS::new() if User doesn't enter text and has no prior Lists.
+                    // if string_from_text_input.is_empty()
+                    //     && ctx
+                    //         .state()
+                    //         .get_named::<ListContainer>("list_container")
+                    //         .map_or(true, |container| container.get_ref_veclist().is_empty())
+                    // {
+                    //     return Ok(Box::new(LandingScreen::new(ctx)));
+                    // }
                 }
                 // let list = List::new(
                 //     ctx.state()
