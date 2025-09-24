@@ -242,6 +242,10 @@ impl List {
         &self.content
     }
 
+    pub fn set_content(&mut self, content: String) {
+        self.content = content;
+    }
+
     pub fn get_id(&self) -> usize {
         self.id
     }
