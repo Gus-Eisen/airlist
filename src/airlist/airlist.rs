@@ -71,9 +71,11 @@ impl AppPage for ListEditorScreen {
                     return Ok(Box::new(LandingScreen::with_list(ctx)));
                 }
                 //fires if User edits list but deletes all values from TextInput.
-                if self.3.is_some()
-                    && string_from_text_input.is_empty()
-                    && ctx.state().get_named("list_container").unwrap()
+                let list_container = ctx
+                    .state()
+                    .get_named::<ListContainer>("list_container")
+                    .unwrap();
+                if self.3.is_some() && string_from_text_input.is_empty() && list_container.len() < 2
                 {
                     if let Some(list_id) = self.3 {
                         if string_from_text_input.is_empty() {
