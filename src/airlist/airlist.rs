@@ -71,12 +71,7 @@ impl AppPage for ListEditorScreen {
                     return Ok(Box::new(LandingScreen::with_list(ctx)));
                 }
                 //fires if User edits list but deletes all values from TextInput.
-                let list_container = ctx
-                    .state()
-                    .get_named::<ListContainer>("list_container")
-                    .unwrap();
-                if self.3.is_some() && string_from_text_input.is_empty() && list_container.len() < 2
-                {
+                if self.3.is_some() && string_from_text_input.is_empty() {
                     if let Some(list_id) = self.3 {
                         if string_from_text_input.is_empty() {
                             let list_container: &mut ListContainer =
@@ -88,8 +83,12 @@ impl AppPage for ListEditorScreen {
                             {
                                 let _ = list_container.get_refmut_veclist().remove(position);
                             }
+                            if list_container.get_ref_veclist().is_empty() {
+                                return Ok(Box::new(LandingScreen::new(ctx)));
+                            } else {
+                                return Ok(Box::new(LandingScreen::with_list(ctx)));
+                            }
                         }
-                        return Ok(Box::new(LandingScreen::new(ctx)));
                     }
                 }
                 //fires if editing an exitsting List.
