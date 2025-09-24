@@ -91,30 +91,22 @@ impl AppPage for ListEditorScreen {
                         }
                         return Ok(Box::new(LandingScreen::new(ctx)));
                     }
-                    //we want to fire LS::new() if User doesn't enter text and has no prior Lists.
-                    // if string_from_text_input.is_empty()
-                    //     && ctx
-                    //         .state()
-                    //         .get_named::<ListContainer>("list_container")
-                    //         .map_or(true, |container| container.get_ref_veclist().is_empty())
-                    // {
-                    //     return Ok(Box::new(LandingScreen::new(ctx)));
-                    // }
                 }
-                // let list = List::new(
-                //     ctx.state()
-                //         .get_named::<AtomicCounterForListID>("atomic_counter")
-                //         .unwrap()
-                //         .generate_id(),
-                //     string_from_text_input,
-                // );
-                // let list_container: &mut ListContainer =
-                //     ctx.state().get_named_mut("list_container").unwrap();
-                // list_container.set(list);
-                // println!(
-                //     "ListEditorScreen navigate to LandingScreen; list_container: {:?}",
-                //     &list_container
-                // );
+                //fires if editing an exitsting List.
+                if let Some(list_id) = self.3 {
+                    if !string_from_text_input.is_empty() {
+                        let list_container: &mut ListContainer =
+                            ctx.state().get_named_mut("list_container").unwrap();
+
+                        if let Some(list) = list_container
+                            .get_refmut_veclist()
+                            .iter_mut()
+                            .find(|list| list.get_id() == list_id)
+                        {
+                            list.set_content(string_from_text_input.clone());
+                        }
+                    }
+                }
                 Ok(Box::new(LandingScreen::with_list(ctx)))
             }
             _ => Err(self),
