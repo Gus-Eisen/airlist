@@ -71,7 +71,10 @@ impl AppPage for ListEditorScreen {
                     return Ok(Box::new(LandingScreen::with_list(ctx)));
                 }
                 //fires if User edits list but deletes all values from TextInput.
-                if self.3.is_some() && string_from_text_input.is_empty() {
+                if self.3.is_some()
+                    && string_from_text_input.is_empty()
+                    && ctx.state().get_named("list_container").unwrap()
+                {
                     if let Some(list_id) = self.3 {
                         if string_from_text_input.is_empty() {
                             let list_container: &mut ListContainer =
@@ -270,6 +273,10 @@ impl ListContainer {
 
     pub fn get_refmut_veclist(&mut self) -> &mut Vec<List> {
         &mut self.vec_of_lists
+    }
+
+    pub fn len(&self) -> usize {
+        self.vec_of_lists.len()
     }
 }
 
