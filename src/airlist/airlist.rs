@@ -202,20 +202,6 @@ impl ListEditorScreen {
             Some(list_id),
         )
     }
-
-    pub fn get_list(&mut self, ctx: &mut Context) -> List {
-        /*TODO: unwrap will panic if string_from_text_input returns None. Does not handle
-        scenario where users deletes TextInput.
-         */
-        let string_from_text_input = self.1.content().find::<TextInput>().unwrap().value();
-        List::new(
-            ctx.state()
-                .get_named::<AtomicCounterForListID>("atomic_counter")
-                .unwrap()
-                .generate_id(),
-            string_from_text_input.to_owned(),
-        )
-    }
 }
 
 #[derive(Debug, Clone)]
@@ -257,12 +243,6 @@ impl ListContainer {
     pub fn set(&mut self, list: List) {
         self.vec_of_lists.push(list);
     }
-
-    // pub fn remove(&mut self, )
-    //
-    // pub fn get_ref(&self) -> &Self {
-    //     self
-    // }
 
     pub fn get_ref_veclist(&self) -> &Vec<List> {
         &self.vec_of_lists
