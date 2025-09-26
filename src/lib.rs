@@ -208,11 +208,10 @@ impl LandingScreen {
             .iter()
             .map(|list| {
                 let list_id = list.get_id();
-                let processed_content = Self::display_title_only(list.get_content());
                 ListItem::new(
                     ctx,
                     false,
-                    processed_content.split('\n').next().unwrap(),
+                    list.get_content().split('\n').next().unwrap(),
                     None,
                     None,
                     None,
@@ -232,8 +231,5 @@ impl LandingScreen {
             })
             .collect();
         vec_listitem
-    }
-    pub fn display_title_only(text: &String) -> &String {
-        text
     }
 }
