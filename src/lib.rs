@@ -44,7 +44,7 @@ impl Application for MyApp {
 start!(MyApp);
 
 #[derive(Debug, Component)]
-pub struct LandingScreen(Stack, Page, #[skip] String);
+pub struct LandingScreen(Stack, Page);
 
 impl OnEvent for LandingScreen {
     fn on_event(&mut self, _ctx: &mut Context, _event: &mut dyn Event) -> bool {
@@ -169,11 +169,7 @@ impl LandingScreen {
             vec![Box::new(text), Box::new(subtext)],
         );
 
-        LandingScreen(
-            Stack::default(),
-            Page::new(Some(header), content, None),
-            String::new(),
-        )
+        LandingScreen(Stack::default(), Page::new(Some(header), content, None))
     }
 
     //a constructor to receive the text from NewListScreen during navigation.
