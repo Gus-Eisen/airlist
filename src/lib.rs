@@ -212,7 +212,7 @@ impl LandingScreen {
                 ListItem::new(
                     ctx,
                     false,
-                    processed_content,
+                    processed_content.split('\n').next().unwrap(),
                     None,
                     None,
                     None,
