@@ -1,12 +1,11 @@
 use crate::LandingScreen;
-use chrono::prelude::*;
 use pelican_ui::drawable::{Component, Drawable};
 use pelican_ui::events::{Event, OnEvent};
 use pelican_ui::layout::{Area, Layout, SizeRequest};
 use pelican_ui::{Component, Context};
 use pelican_ui_std::{
-    AppPage, ButtonSize, ButtonState, ButtonStyle, Content, Header, IconButton, InputEditedEvent,
-    NavigateEvent, Offset, Page, Stack, TextInput,
+    AppPage, ButtonSize, ButtonState, ButtonStyle, ClearActiveInput, Content, Header, IconButton,
+    InputEditedEvent, NavigateEvent, Offset, Page, Stack, TextInput,
 };
 use std::sync::atomic::{AtomicUsize, Ordering};
 
@@ -20,6 +19,10 @@ impl OnEvent for ListEditorScreen {
         {
             self.2 = input.value().clone();
             println!("NewListScreen captured text: {}", self.2);
+        }
+        if event.downcast_ref::<ClearActiveInput>().is_some() {
+            println!("ClearActiveInput received.");
+            self.2.clear();
         }
         true
     }
@@ -159,7 +162,7 @@ impl ListEditorScreen {
         )
     }
 
-    //variant of LES to edit list.
+    //variant of LES to edit previously creadted list.
     pub fn edit(ctx: &mut Context, user_text: &str, list_id: usize) -> Self {
         let return_to_landingscreen_icon = IconButton::new(
             ctx,
@@ -189,11 +192,24 @@ impl ListEditorScreen {
             TextInput::NO_ICON,
             true,
         );
+        let delete_button = IconButton::new(
+            ctx,
+            "delete",
+            ButtonSize::Medium,
+            ButtonStyle::Secondary,
+            ButtonState::Default,
+            Box::new(|ctx: &mut Context| {
+                println!("Delete button clicked.");
+                ctx.trigger_event(ClearActiveInput);
+                ctx.trigger_event(NavigateEvent(0));
+            }),
+            None,
+        );
         let content = Content::new(
             ctx,
             Offset::Start,
             // All items must be boxed as Box<dyn Drawable>
-            vec![Box::new(text_field)],
+            vec![Box::new(text_field), Box::new(delete_button)],
         );
         ListEditorScreen(
             Stack::default(),

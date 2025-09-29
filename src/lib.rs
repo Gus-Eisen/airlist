@@ -56,7 +56,7 @@ impl OnEvent for LandingScreen {
 impl AppPage for LandingScreen {
     // This screen does not have a navigation bar
     fn has_nav(&self) -> bool {
-        false
+        true
     }
 
     fn navigate(
@@ -172,8 +172,11 @@ impl LandingScreen {
         LandingScreen(Stack::default(), Page::new(Some(header), content, None))
     }
 
-    //a constructor to receive the text from NewListScreen during navigation.
+    /* a constructor to receive text from from the ListContainer after navigating from
+     ListEditorScreen.
+    */
     pub fn with_list(ctx: &mut Context) -> Self {
+        //TODO: I could refactor to not have to call Self::new().
         let mut screen = Self::new(ctx);
         let items = screen.1.content().items();
         if items.is_empty() {
