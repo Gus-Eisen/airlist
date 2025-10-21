@@ -3,10 +3,17 @@ use pelican_ui::drawable::{Component, Drawable};
 use pelican_ui::events::{Event, OnEvent};
 use pelican_ui::layout::{Area, Layout, SizeRequest};
 use pelican_ui::{Component, Context};
-use pelican_ui_std::{
-    AppPage, ButtonSize, ButtonState, ButtonStyle, ClearActiveInput, Content, Header, IconButton,
-    InputEditedEvent, NavigateEvent, Offset, Page, Stack, TextInput,
+use pelican_ui_std::AppPage;
+use pelican_ui_std::components::avatar::{AvatarContent, AvatarIconStyle};
+use pelican_ui_std::components::button::{
+    Button, ButtonSize, ButtonState, ButtonStyle, IconButton,
 };
+use pelican_ui_std::components::interface::general::{Content, Header, Interface, Page};
+use pelican_ui_std::components::list_item::ListItem;
+use pelican_ui_std::components::{ExpandableText, Text, TextInput, TextStyle};
+use pelican_ui_std::events::{ClearActiveInput, InputEditedEvent, NavigateEvent};
+use pelican_ui_std::layout::{Column, Offset, Padding, Size, Stack};
+
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 #[derive(Debug, Component)]

@@ -4,15 +4,17 @@ use crate::airlist::airlist::{AtomicCounterForListID, List, ListContainer, ListE
 use pelican_ui::drawable::{Align, Component, Drawable};
 use pelican_ui::events::{Event, OnEvent};
 use pelican_ui::layout::{Area, Layout, SizeRequest};
-use pelican_ui::runtime::{ServiceList, Services};
-use pelican_ui::{
-    Application, Component, Context, MaverickOS, PelicanEngine, Plugin, Plugins, maverick_start,
-    start,
-};
-use pelican_ui_std::{
-    AppPage, AvatarContent, AvatarIconStyle, Content, ExpandableText, Header, IconButton,
-    Interface, ListItem, NavigateEvent, Offset, Page, Stack, Text, TextStyle,
-};
+use pelican_ui::{Application, Component, Context, Plugin, Plugins, start};
+use pelican_ui::{ServiceList, Services};
+
+use pelican_ui_std::AppPage;
+use pelican_ui_std::components::avatar::{AvatarContent, AvatarIconStyle};
+use pelican_ui_std::components::button::{Button, IconButton};
+use pelican_ui_std::components::interface::general::{Content, Header, Interface, Page};
+use pelican_ui_std::components::list_item::ListItem;
+use pelican_ui_std::components::{ExpandableText, Text, TextStyle};
+use pelican_ui_std::events::NavigateEvent;
+use pelican_ui_std::layout::{Column, Offset, Padding, Size, Stack};
 
 // Define the main application struct. This is our entry point type.
 pub struct MyApp;
